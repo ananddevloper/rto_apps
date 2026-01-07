@@ -61,10 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     },
   ];
-/////
-  onTabClicked() {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => PracticeQuestions(setNumber: 10,)));
-    }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

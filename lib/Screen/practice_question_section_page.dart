@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:rto_apps/Screen/introduction_page.dart';
 import 'package:rto_apps/Screen/practice_questions.dart';
 import 'package:rto_apps/Screen/question_model.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 import 'package:rto_apps/helper/asset_helper.dart';
 
 class PracticeQuestionSectionPage extends StatefulWidget {
-  const PracticeQuestionSectionPage({super.key});
-  
+  const PracticeQuestionSectionPage({super.key, });
+ 
   @override
   State<PracticeQuestionSectionPage> createState() =>
       _PracticeQuestionSectionPageState();
@@ -15,21 +16,10 @@ class PracticeQuestionSectionPage extends StatefulWidget {
 
 class _PracticeQuestionSectionPageState
     extends State<PracticeQuestionSectionPage> {
-  final List<PracticeQuestionSectionModal> practiceQuestionSectionList = List.generate(10, (index){
-    return PracticeQuestionSectionModal(index: index + 1, title: 'Practice Questions Set');
+  final List<PracticeQuestionSectionModal> practiceQuestionSectionList = List.generate(20, (index){
+    return PracticeQuestionSectionModal(index: index + 1, title: 'Practice Questions Set');    
   });
-    // PracticeQuestionSectionModal(index: 1, title: 'Practice Questions Set'),
-    // PracticeQuestionSectionModal(index: 2, title: 'Practice Questions Set'),
-    //  PracticeQuestionSectionModal(index: 3, title: 'Practice Questions Set'),
-    //  PracticeQuestionSectionModal(index: 4, title: 'Practice Questions Set'),
-    //  PracticeQuestionSectionModal(index: 5, title: 'Practice Questions Set'),
-    //  PracticeQuestionSectionModal(index: 6, title: 'Practice Questions Set'),
-    //  PracticeQuestionSectionModal(index: 7, title: 'Practice Questions Set'),
-    //  PracticeQuestionSectionModal(index: 8, title: 'Practice Questions Set'),
-    //  PracticeQuestionSectionModal(index: 9, title: 'Practice Questions Set'),
-    //  PracticeQuestionSectionModal(index: 10, title: 'Practice Questions Set'),
-  
-
+    
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,10 +51,8 @@ class _PracticeQuestionSectionPageState
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => PracticeQuestions(
-                                setNumber: practiceQuestionSectionList[index].index,
-                              ),
+                            MaterialPageRoute( 
+                           builder: (context) => IntroductionPage(setNumber: index + 1, title: practiceQuestionSectionList[index].title,),
                             ),
                           );
                         },
@@ -91,9 +79,9 @@ class _PracticeQuestionSectionPageState
     return InkWell(
       onTap: onTap,
       child: Row(
-        children: [
+        children:[
           CircleAvatar(
-            backgroundColor: AppColors.blackColor,
+            backgroundColor: AppColors.appBarColors,
             child: Text(
               index.toString(),
               style: TextStyle(
@@ -105,7 +93,7 @@ class _PracticeQuestionSectionPageState
           ),
           SizedBox(width: 15),
           Text(
-            'Practice Questions Set',
+            title,
             style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
           ),
           Spacer(),

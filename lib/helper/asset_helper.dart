@@ -9,8 +9,6 @@ class AppIcon {
   static const testHistory = '$_baseIcon/Test_History.svg';
   static const arrow = '$_baseIcon/Arrow.svg';
   static const test = '$_baseIcon/Test.svg';
-  
-  
 }
 
 class AppImage {
@@ -18,12 +16,13 @@ class AppImage {
   static const String welcomeImage = '$_baseImage/welcome.png';
   static const String logo = '$_baseImage/logo.png';
   static const String roadSignImage = '$_baseImage/Road.png';
-  
 }
 
 class AppAnimation {
-  static const _baseAnimation = 'assets/animation/';
+  static const _baseAnimation = 'assets/animation';
   static const String carAnimation = '$_baseAnimation/car_animation.json';
+  static const String championAnimation = '$_baseAnimation/champion.json';
+  static const String failAnimation = '$_baseAnimation/fail.json';
 }
 
 class AppFile {

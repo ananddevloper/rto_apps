@@ -57,7 +57,6 @@ class _SpleshscreenState extends State<Spleshscreen> {
             bottom: 30,
             right: 10,
             left: 10,
-
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Lottie.asset(AppAnimation.carAnimation),
