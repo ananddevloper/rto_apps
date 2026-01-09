@@ -1,17 +1,27 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:rto_apps/Screen/practice_question_section_page.dart';
 import 'package:rto_apps/Screen/practice_questions.dart';
+import 'package:rto_apps/Screen/question_model.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 
 class IntroductionPage extends StatefulWidget {
-  const IntroductionPage({super.key, required this.setNumber, required this.title});
-  final int setNumber;
+  const IntroductionPage({
+    super.key,
+    required this.examList,
+    required this.title,
+  });
+  final List<QuestionModel> examList;
   final String title;
   @override
   State<IntroductionPage> createState() => _IntroductionPageState();
 }
 
 class _IntroductionPageState extends State<IntroductionPage> {
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +37,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
             color: AppColors.whiteColors,
           ),
         ),
+        actions: [  ],
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
@@ -65,10 +76,16 @@ class _IntroductionPageState extends State<IntroductionPage> {
                       SizedBox(height: 20),
                       InkWell(
                         onTap: () {
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => PracticeQuestions(
-                                setNumber: widget.setNumber,
+                          List<QuestionModel> random20Questions = getRandomQuestions(widget.examList, 15);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PracticeQuestions(
                                 title: widget.title,
-                              )));
+                                examList: random20Questions,
+                              ),
+                            ),
+                          );
                         },
                         child: Card(
                           elevation: 2,
@@ -102,4 +119,12 @@ class _IntroductionPageState extends State<IntroductionPage> {
       ),
     );
   }
+
+  List<QuestionModel> getRandomQuestions(
+    List<QuestionModel> questions, int count) {
+  List<QuestionModel> shuffledList = List.from(questions);
+  shuffledList.shuffle(); // 🔀 random order
+  return shuffledList.take(count).toList();
+}
+
 }

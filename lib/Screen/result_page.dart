@@ -7,17 +7,14 @@ import 'package:rto_apps/helper/app_colors.dart';
 import 'package:rto_apps/helper/asset_helper.dart';
 
 class ResultPage extends StatefulWidget {
-  const ResultPage({super.key, required this.questions, required this.result, required this.title, required this.setNumber});
+  const ResultPage({super.key, required this.questions, required this.result, required this.title, });
   final List<QuestionModel> questions;
   final bool result;
   final String title;
-  final int setNumber;
   @override
   State<ResultPage> createState() => _ResultPageState();
 }
-
 class _ResultPageState extends State<ResultPage> {
-
 int get score{
   return widget.questions.where((q)=>q.selectedAnswer == q.correctAnswer).length; //Add This Line
 }
@@ -154,7 +151,7 @@ int get score{
                             onTap: () {
                               Navigator.pushReplacement(
                                 context, MaterialPageRoute(
-                                  builder:(context) => PracticeQuestions(setNumber: widget.setNumber, title: widget.title,),));
+                                  builder:(context) => PracticeQuestions( title: widget.title, examList: widget.questions,),));
                             },
                             child: getBasicDesign(
                               icon: Icons.refresh,

@@ -5,13 +5,12 @@ import 'package:rto_apps/helper/app_colors.dart';
 class RoadSignScreen extends StatefulWidget {
   const RoadSignScreen({super.key, required this.roadSign});
   final List<QuestionModel> roadSign;
-
   @override
   State<RoadSignScreen> createState() => _RoadSignScreenState();
 }
 
 class _RoadSignScreenState extends State<RoadSignScreen> {
-  List<QuestionModel> roadSignList = [];
+  List<QuestionModel> roadSignList = []; ////
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +32,7 @@ class _RoadSignScreenState extends State<RoadSignScreen> {
         child: ListView.separated(
           shrinkWrap: true,
           itemBuilder: (context, index) {
-            final roadSigns = roadSignList[index];
+            final roadSigns = roadSignList[index]; ////
             return Card(
               elevation: 2,
               color: AppColors.whiteColors,

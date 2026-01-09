@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:rto_apps/Screen/introduction_page.dart';
 import 'package:rto_apps/Screen/practice_question_section_page.dart';
 import 'package:rto_apps/Screen/practice_questions.dart';
 import 'package:rto_apps/Screen/question_model.dart';
 import 'package:rto_apps/Screen/question_bank.dart';
 import 'package:rto_apps/Screen/road_sign.dart';
+
 import 'package:rto_apps/helper/app_colors.dart';
 import 'package:rto_apps/helper/asset_helper.dart';
 
@@ -18,7 +20,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> { 
 
-List<QuestionModel> homeScreenLoadingList = [];
+List<QuestionModel> homeScreenLoadingList = []; /////////////////////
 
   List<Map<String, dynamic>> get homeScreenList => [
     {
@@ -36,7 +38,7 @@ List<QuestionModel> homeScreenLoadingList = [];
     'title': 'Practical Questions', 
     'titleColor': AppColors.appBarColors,
     'onTap':  () {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => PracticeQuestionSectionPage()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => PracticeQuestionSectionPage(practiceQuestions: homeScreenLoadingList,)));
     },
     },
     {
@@ -54,7 +56,8 @@ List<QuestionModel> homeScreenLoadingList = [];
     'title': 'Test', 
     'titleColor': AppColors.yellowDarkColors,
     'onTap': () {
-     // Navigator.push(context, MaterialPageRoute(builder: (context) => StudyScreen()));
+      
+      Navigator.push(context, MaterialPageRoute(builder: (context) => IntroductionPage(title: 'Exam', examList: homeScreenLoadingList,)));
     },
     },
     

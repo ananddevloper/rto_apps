@@ -7,8 +7,8 @@ import 'package:rto_apps/helper/app_colors.dart';
 import 'package:rto_apps/helper/asset_helper.dart';
 
 class PracticeQuestionSectionPage extends StatefulWidget {
-  const PracticeQuestionSectionPage({super.key, });
- 
+  const PracticeQuestionSectionPage({super.key, required this.practiceQuestions, });
+  final List<QuestionModel> practiceQuestions;
   @override
   State<PracticeQuestionSectionPage> createState() =>
       _PracticeQuestionSectionPageState();
@@ -16,8 +16,18 @@ class PracticeQuestionSectionPage extends StatefulWidget {
 
 class _PracticeQuestionSectionPageState
     extends State<PracticeQuestionSectionPage> {
-  final List<PracticeQuestionSectionModal> practiceQuestionSectionList = List.generate(15, (index){
-    return PracticeQuestionSectionModal(index: index + 1, title: 'Practice Questions Set');    
+
+    List<QuestionModel> allQuestions = []; ///
+
+@override
+  void initState() {
+    // TODO: implement initState
+    allQuestions = widget.practiceQuestions;
+    super.initState();
+  }
+
+  final List<PracticeQuestionSectionModal> practiceQuestionSectionList = List.generate(20, (index){
+    return PracticeQuestionSectionModal(index: index + 1, title: 'Practice Questions Set ${index+1}');    
   });
 
   @override
@@ -38,6 +48,7 @@ class _PracticeQuestionSectionPageState
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
+                  
                   return Card(
                     elevation: 2,
                     color: AppColors.whiteColors,
@@ -50,10 +61,18 @@ class _PracticeQuestionSectionPageState
                         index: practiceQuestionSectionList[index].index,
                         title: practiceQuestionSectionList[index].title,
                         onTap: () {
+                          int setIndex = practiceQuestionSectionList[index].index;
+                          int startIndex = (setIndex - 1) * 31;
+                          int endIndex = startIndex + 30;
+
+                          List<QuestionModel> slectedQuestions = 
+                            allQuestions.sublist(startIndex, endIndex>allQuestions.length? allQuestions.length : endIndex);
+
+
                           Navigator.push(
                             context,
                             MaterialPageRoute( 
-                           builder: (context) => IntroductionPage(setNumber: index + 1, title: practiceQuestionSectionList[index].title,),
+                           builder: (context) => PracticeQuestions( title: practiceQuestionSectionList[index].title, examList: slectedQuestions ,),
                             ),
                           );
                         },
@@ -103,4 +122,5 @@ class _PracticeQuestionSectionPageState
       ),
     );
   }
+  
 }

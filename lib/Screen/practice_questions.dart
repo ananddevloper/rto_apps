@@ -10,11 +10,9 @@ import 'package:rto_apps/helper/asset_helper.dart';
 
 class PracticeQuestions extends StatefulWidget {
   const PracticeQuestions({
-    super.key,
-    required this.setNumber,
-    required this.title,
+    super.key, required this.examList, required this.title,
   });
-  final int setNumber;
+  final List<QuestionModel> examList;
   final String title;
   @override
   State<PracticeQuestions> createState() => _PracticeQuestionsState();
@@ -25,16 +23,13 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
   int currentIndex = 0;
   int rightCount = 0;
   int wrongCount = 0;
+  
   Timer? _timer;
   int secondsLeft = 10 * 1;
-
-  List<QuestionModel> questionList = [];
-
   @override
   void initState() {
     startTestTimer();
-    super.initState();
-    loadQuestionsFromJson();
+    super.initState();   
   }
 
   @override
@@ -52,10 +47,10 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        actions: [getTimerView()],
+       actions: [getTimerView()],
       ),
 
-      body: questionList.isEmpty
+      body: widget.examList.isEmpty
           ? Center(child: CircularProgressIndicator())
           : Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -76,7 +71,7 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                         child: Row(
                           children: [
                             Text(
-                              'Questions:- ${currentIndex + 1}/${questionList.length}',
+                              'Questions:- ${currentIndex + 1}/${widget.examList.length}',
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w600,
@@ -164,7 +159,7 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
 
                   Expanded(
                     child: PageView.builder(
-                      itemCount: questionList.length,
+                      itemCount: widget.examList.length,
                       controller: _pageController,
                       physics: const NeverScrollableScrollPhysics(),
                       onPageChanged: (index) {
@@ -173,7 +168,7 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                         });
                       },
                       itemBuilder: (context, index) {
-                        final questionModel = questionList[index];
+                        final questionModel = widget.examList[index];
                         return SingleChildScrollView(
                           child: Column(
                             children: [
@@ -342,7 +337,7 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          if (currentIndex < questionList.length - 1) {
+                          if (currentIndex < widget.examList.length - 1) {
                             _pageController.nextPage(
                               duration: const Duration(milliseconds: 300),
                               curve: Curves.easeInOut,
@@ -353,10 +348,10 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ResultPage(
-                                  questions: questionList,
+                                  questions: widget.examList,
                                   result: isPass,
                                   title: widget.title,
-                                  setNumber: widget.setNumber,
+                                  
                                 ),
                               ),
                             );
@@ -374,7 +369,7 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                               vertical: 15,
                             ),
                             child: Text(
-                              currentIndex == questionList.length - 1
+                              currentIndex == widget.examList.length - 1
                                   ? 'Submit'
                                   : 'Next',
                               style: TextStyle(
@@ -456,10 +451,10 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ResultPage(
-                    questions: questionList,
+                    questions: widget.examList,
                     result: isPass,
                     title: widget.title,
-                    setNumber: widget.setNumber,
+                   
                   ),
                 ),
               );
@@ -481,21 +476,6 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
     _timer?.cancel();
     _pageController.dispose();
     super.dispose();
-  }
-
-  Future<List<QuestionModel>> loadQuestionsFromJson() async {
-    final String jsonString = await rootBundle.loadString(AppFile.dataJson);
-    final List<dynamic> jsonList = jsonDecode(jsonString);
-    List<QuestionModel> questions = jsonList
-        .map((json) => QuestionModel.fromjson(json))
-        .toList();
-    var data = questions.sublist(
-      (widget.setNumber - 1) * 16,
-      (widget.setNumber * 16) - 1,
-    );
-    questionList = data;
-    setState(() {});
-    return data;
   }
   
 }
