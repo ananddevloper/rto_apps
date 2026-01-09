@@ -1,20 +1,35 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rto_apps/Screen/practice_question_section_page.dart';
 import 'package:rto_apps/Screen/practice_questions.dart';
+import 'package:rto_apps/Screen/question_model.dart';
+import 'package:rto_apps/Screen/question_bank.dart';
+import 'package:rto_apps/Screen/road_sign.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 import 'package:rto_apps/helper/asset_helper.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
-
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> { 
+
+List<QuestionModel> homeScreenLoadingList = [];
 
   List<Map<String, dynamic>> get homeScreenList => [
+    {
+      'cardColor': AppColors.redColor,
+      'icon': SvgPicture.asset(AppIcon.study),
+    'title': 'Question Bank', 
+    'titleColor': AppColors.redColor,
+    'onTap':() {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => QuestionBank(questionList: homeScreenLoadingList.where((q)=> q.image == null || q.image!.isEmpty).toList())));
+    }
+    },
     {
       'cardColor': AppColors.appBarColors,
       'icon': SvgPicture.asset(AppIcon.aToZ),
@@ -25,39 +40,30 @@ class _HomeScreenState extends State<HomeScreen> {
     },
     },
     {
-      'cardColor': AppColors.yellowLightColoe,
-      'icon': SvgPicture.asset(AppIcon.test),
-    'title': 'Test', 
-    'titleColor': AppColors.yellowDarkColors,
-    'onTap': () {
-     // Navigator.push(context, MaterialPageRoute(builder: (context) => PracticeQuestions()));
-    },
-    },
-    {
       'cardColor': AppColors.greenColors,
       'icon': SvgPicture.asset(AppIcon.roadSign),
     'title': 'Road Signs', 
     'titleColor': AppColors.greenColors,
     'onTap': () {
-    //  Navigator.push(context, MaterialPageRoute(builder: (context) => PracticeQuestions()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => RoadSignScreen(roadSign: homeScreenLoadingList.where((q)=> q.image !=null || (q.image?.isNotEmpty ?? false)).toList())));
     },
     },
     {
-      'cardColor': AppColors.redColor,
-      'icon': SvgPicture.asset(AppIcon.study),
-    'title': 'Studt', 
-    'titleColor': AppColors.redColor,
-    'onTap': (){
-
-    }
+      'cardColor': AppColors.yellowLightColoe,
+      'icon': SvgPicture.asset(AppIcon.test),
+    'title': 'Test', 
+    'titleColor': AppColors.yellowDarkColors,
+    'onTap': () {
+     // Navigator.push(context, MaterialPageRoute(builder: (context) => StudyScreen()));
     },
+    },
+    
     {
       'cardColor': AppColors.lightOrangeColor,
       'icon': SvgPicture.asset(AppIcon.test),
     'title': 'Test History', 
     'titleColor': AppColors.lightOrangeColor,
     'onTap': (){
-
     }
     },
   ];
@@ -67,6 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: AppColors.homePageBackground,
       appBar: AppBar(
+        iconTheme: IconThemeData(color: AppColors.whiteColors),
         backgroundColor: AppColors.appBarColors,
 
         leading: Icon(Icons.menu),
@@ -86,32 +93,31 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             
             children: [
-              SizedBox(
-                height: 900,
-                child: ListView.separated(
-                  itemBuilder: (context, index) {
-                    return Card(
-                      elevation: 2,
-                      color: AppColors.whiteColors,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadiusGeometry.circular(10),
+              ListView.separated(
+                shrinkWrap:  true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return Card(
+                    elevation: 2,
+                    color: AppColors.whiteColors,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadiusGeometry.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 25, 10),
+                      child: homeDesign(
+                        cardColor: homeScreenList[index]['cardColor'],
+                        icon: homeScreenList[index]['icon'],
+                        title: homeScreenList[index]['title'], 
+                        titleColor: homeScreenList[index]['titleColor'],
+                       onTap: homeScreenList[index]['onTap'],
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 10, 25, 10),
-                        child: homeDesign(
-                          cardColor: homeScreenList[index]['cardColor'],
-                          icon: homeScreenList[index]['icon'],
-                          title: homeScreenList[index]['title'], 
-                          titleColor: homeScreenList[index]['titleColor'],
-                         onTap: homeScreenList[index]['onTap'],
-                        ),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) =>
-                      Divider(color: Colors.transparent),
-                  itemCount: homeScreenList.length,
-                ),
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) =>
+                    Divider(color: Colors.transparent),
+                itemCount: homeScreenList.length,
               ),
             ],
           ),
@@ -146,7 +152,22 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+@override
+  void initState() {
+    super.initState();
+    loadingHomeData();
+  }
+Future<void> loadingHomeData() async {
+    final String response = await rootBundle.loadString(AppFile.dataJson);
+    final List<dynamic> data = json.decode(response);
+    final allQuestions = data.map((e) => QuestionModel.fromjson(e)).toList();
+    homeScreenLoadingList = allQuestions;
+    setState(() {
+      
+    });
+  }
+
 }
 
-class voidCallback {
-}
+

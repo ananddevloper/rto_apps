@@ -17,6 +17,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
     return Scaffold(
       backgroundColor: AppColors.homePageBackground,
       appBar: AppBar(
+        iconTheme: IconThemeData(color: AppColors.whiteColors),
         backgroundColor: AppColors.appBarColors,
         title: Text(
           'Exam',

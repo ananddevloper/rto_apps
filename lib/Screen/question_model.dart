@@ -35,7 +35,8 @@ class QuestionModel {
       options: json['questions'].cast<String>(),
       id: json['id'],
       image: json['image'],
-      selectedAnswer: json['selectedAnswer'], 
+     // selectedAnswer: json['selectedAnswer'], 
+      selectedAnswer: null,
       correctAnswer: json['answer'],
     );
   }

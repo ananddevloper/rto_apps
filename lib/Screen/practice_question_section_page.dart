@@ -16,15 +16,16 @@ class PracticeQuestionSectionPage extends StatefulWidget {
 
 class _PracticeQuestionSectionPageState
     extends State<PracticeQuestionSectionPage> {
-  final List<PracticeQuestionSectionModal> practiceQuestionSectionList = List.generate(20, (index){
+  final List<PracticeQuestionSectionModal> practiceQuestionSectionList = List.generate(15, (index){
     return PracticeQuestionSectionModal(index: index + 1, title: 'Practice Questions Set');    
   });
-    
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.homePageBackground,
       appBar: AppBar(
+        iconTheme: IconThemeData(color: AppColors.whiteColors),
         title: Text('Practice Questions',style: TextStyle(color: AppColors.whiteColors,fontSize: 20,fontWeight: FontWeight.bold),),
         backgroundColor: AppColors.appBarColors,
       ),

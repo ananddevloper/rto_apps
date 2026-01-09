@@ -25,9 +25,9 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
   int currentIndex = 0;
   int rightCount = 0;
   int wrongCount = 0;
-
   Timer? _timer;
-  int secondsLeft = 30 * 1;
+  int secondsLeft = 10 * 1;
+
   List<QuestionModel> questionList = [];
 
   @override
@@ -42,6 +42,7 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
     return Scaffold(
       backgroundColor: AppColors.welcomeBackgroundColor,
       appBar: AppBar(
+        iconTheme: IconThemeData(color: AppColors.whiteColors),
         backgroundColor: AppColors.appBarColors,
         title: Text(
           '${widget.title}',
@@ -230,6 +231,7 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                                   ),
                                 ),
                               ),
+                              
                               SizedBox(height: 10),
                               ListView.separated(
                                 shrinkWrap: true,
@@ -441,14 +443,15 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
       context: context,
       barrierDismissible: false,
       builder: (_) => AlertDialog(
-        title: const Text("Time Up",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600,),),
-        content: const Text("Your test time is over"),
+        backgroundColor: AppColors.homePageBackground,
+        title:  Text("Time Over",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600,color: AppColors.appBarColors),),
+        content:  Text(textAlign: TextAlign.center,
+          "Better luck for next time",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
         actions: [
           TextButton(
             onPressed: () async {
               Navigator.pop(context);
               bool isPass = rightCount >= 12;
-      
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -461,7 +464,7 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                 ),
               );
             },
-            child: const Text("OK"),
+            child:  Text("OK",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: AppColors.appBarColors),),
           ),
         ],
       ),
@@ -486,7 +489,6 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
     List<QuestionModel> questions = jsonList
         .map((json) => QuestionModel.fromjson(json))
         .toList();
-
     var data = questions.sublist(
       (widget.setNumber - 1) * 16,
       (widget.setNumber * 16) - 1,
@@ -495,4 +497,5 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
     setState(() {});
     return data;
   }
+  
 }
