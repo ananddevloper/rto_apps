@@ -19,9 +19,6 @@ class IntroductionPage extends StatefulWidget {
 }
 
 class _IntroductionPageState extends State<IntroductionPage> {
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +34,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
             color: AppColors.whiteColors,
           ),
         ),
-        actions: [  ],
+        actions: [],
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
@@ -76,13 +73,15 @@ class _IntroductionPageState extends State<IntroductionPage> {
                       SizedBox(height: 20),
                       InkWell(
                         onTap: () {
-                          List<QuestionModel> random20Questions = getRandomQuestions(widget.examList, 15);
+                          List<QuestionModel> random20Questions =
+                              getRandomQuestions(widget.examList, 15);
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => PracticeQuestions(
                                 title: widget.title,
                                 examList: random20Questions,
+                                showTimer: true,
                               ),
                             ),
                           );
@@ -121,10 +120,11 @@ class _IntroductionPageState extends State<IntroductionPage> {
   }
 
   List<QuestionModel> getRandomQuestions(
-    List<QuestionModel> questions, int count) {
-  List<QuestionModel> shuffledList = List.from(questions);
-  shuffledList.shuffle(); // 🔀 random order
-  return shuffledList.take(count).toList();
-}
-
+    List<QuestionModel> questions,
+    int count,
+  ) {
+    List<QuestionModel> shuffledList = List.from(questions);
+    shuffledList.shuffle(); // 🔀 random order
+    return shuffledList.take(count).toList();
+  }
 }

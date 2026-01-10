@@ -7,7 +7,10 @@ import 'package:rto_apps/helper/app_colors.dart';
 import 'package:rto_apps/helper/asset_helper.dart';
 
 class PracticeQuestionSectionPage extends StatefulWidget {
-  const PracticeQuestionSectionPage({super.key, required this.practiceQuestions, });
+  const PracticeQuestionSectionPage({
+    super.key,
+    required this.practiceQuestions,
+  });
   final List<QuestionModel> practiceQuestions;
   @override
   State<PracticeQuestionSectionPage> createState() =>
@@ -16,19 +19,24 @@ class PracticeQuestionSectionPage extends StatefulWidget {
 
 class _PracticeQuestionSectionPageState
     extends State<PracticeQuestionSectionPage> {
+  List<QuestionModel> allQuestions = [];
 
-    List<QuestionModel> allQuestions = []; ///
+  ///
 
-@override
+  @override
   void initState() {
     // TODO: implement initState
     allQuestions = widget.practiceQuestions;
     super.initState();
   }
 
-  final List<PracticeQuestionSectionModal> practiceQuestionSectionList = List.generate(20, (index){
-    return PracticeQuestionSectionModal(index: index + 1, title: 'Practice Questions Set ${index+1}');    
-  });
+  final List<PracticeQuestionSectionModal> practiceQuestionSectionList =
+      List.generate(20, (index) {
+        return PracticeQuestionSectionModal(
+          index: index + 1,
+          title: 'Practice Questions Set ${index + 1}',
+        );
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +44,14 @@ class _PracticeQuestionSectionPageState
       backgroundColor: AppColors.homePageBackground,
       appBar: AppBar(
         iconTheme: IconThemeData(color: AppColors.whiteColors),
-        title: Text('Practice Questions',style: TextStyle(color: AppColors.whiteColors,fontSize: 20,fontWeight: FontWeight.bold),),
+        title: Text(
+          'Practice Questions',
+          style: TextStyle(
+            color: AppColors.whiteColors,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         backgroundColor: AppColors.appBarColors,
       ),
       body: Padding(
@@ -48,7 +63,6 @@ class _PracticeQuestionSectionPageState
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  
                   return Card(
                     elevation: 2,
                     color: AppColors.whiteColors,
@@ -61,18 +75,26 @@ class _PracticeQuestionSectionPageState
                         index: practiceQuestionSectionList[index].index,
                         title: practiceQuestionSectionList[index].title,
                         onTap: () {
-                          int setIndex = practiceQuestionSectionList[index].index;
+                          int setIndex =
+                              practiceQuestionSectionList[index].index;
                           int startIndex = (setIndex - 1) * 31;
                           int endIndex = startIndex + 30;
 
-                          List<QuestionModel> slectedQuestions = 
-                            allQuestions.sublist(startIndex, endIndex>allQuestions.length? allQuestions.length : endIndex);
-
-
+                          List<QuestionModel> slectedQuestions = allQuestions
+                              .sublist(
+                                startIndex,
+                                endIndex > allQuestions.length
+                                    ? allQuestions.length
+                                    : endIndex,
+                              );
                           Navigator.push(
                             context,
-                            MaterialPageRoute( 
-                           builder: (context) => PracticeQuestions( title: practiceQuestionSectionList[index].title, examList: slectedQuestions ,),
+                            MaterialPageRoute(
+                              builder: (context) => PracticeQuestions(
+                                title: practiceQuestionSectionList[index].title,
+                                examList: slectedQuestions,
+                                showTimer: false,
+                              ),
                             ),
                           );
                         },
@@ -99,7 +121,7 @@ class _PracticeQuestionSectionPageState
     return InkWell(
       onTap: onTap,
       child: Row(
-        children:[
+        children: [
           CircleAvatar(
             backgroundColor: AppColors.appBarColors,
             child: Text(
@@ -122,5 +144,4 @@ class _PracticeQuestionSectionPageState
       ),
     );
   }
-  
 }

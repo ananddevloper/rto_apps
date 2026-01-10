@@ -15,6 +15,10 @@ class QuestionModel {
   String? selectedAnswer;
   final String correctAnswer;
   bool isAnswered = false; //false
+  void reset (){
+    selectedAnswer = null;
+    isAnswered = false;
+  }
 
   QuestionModel({
     required this.question,

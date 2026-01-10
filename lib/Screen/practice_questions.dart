@@ -10,10 +10,14 @@ import 'package:rto_apps/helper/asset_helper.dart';
 
 class PracticeQuestions extends StatefulWidget {
   const PracticeQuestions({
-    super.key, required this.examList, required this.title,
+    super.key,
+    required this.examList,
+    required this.title,
+    required this.showTimer,
   });
   final List<QuestionModel> examList;
   final String title;
+  final bool showTimer;
   @override
   State<PracticeQuestions> createState() => _PracticeQuestionsState();
 }
@@ -23,13 +27,17 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
   int currentIndex = 0;
   int rightCount = 0;
   int wrongCount = 0;
-  
+
   Timer? _timer;
-  int secondsLeft = 10 * 1;
+  int secondsLeft = 10 * 30;
+
   @override
   void initState() {
-    startTestTimer();
-    super.initState();   
+    super.initState();
+    if (widget.showTimer) 
+    {
+      startTestTimer();
+    }
   }
 
   @override
@@ -47,7 +55,7 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
             fontWeight: FontWeight.bold,
           ),
         ),
-       actions: [getTimerView()],
+       // actions: widget.showTimer ? [getTimerView()] : [],
       ),
 
       body: widget.examList.isEmpty
@@ -78,9 +86,12 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                                 color: AppColors.whiteColors,
                               ),
                             ),
+                            
                           ],
                         ),
                       ),
+                      widget.showTimer ? getTimerView() : Container(),
+                      if(!widget.showTimer)
                       Row(
                         children: [
                           Container(
@@ -202,9 +213,9 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                                             child: Text(
                                               "${questionModel.question}",
                                               style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500,
-                                                color: AppColors.blackColor,
+                                                fontSize: 19,
+                                                fontWeight: FontWeight.w400,
+                                                
                                               ),
                                             ),
                                           ),
@@ -226,7 +237,6 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                                   ),
                                 ),
                               ),
-                              
                               SizedBox(height: 10),
                               ListView.separated(
                                 shrinkWrap: true,
@@ -268,8 +278,8 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                                             Text(
                                               '${optionLabel(index)}.',
                                               style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
+                                                fontSize: 17,
+                                                
                                                 color: AppColors.blackColor,
                                               ),
                                             ),
@@ -278,8 +288,8 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                                               child: Text(
                                                 questionModel.options[index],
                                                 style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 17,
+                                                  
                                                 ),
                                               ),
                                             ),
@@ -350,8 +360,7 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                                 builder: (context) => ResultPage(
                                   questions: widget.examList,
                                   result: isPass,
-                                  title: widget.title,
-                                  
+                                  title: widget.title, showTimer: widget.showTimer,
                                 ),
                               ),
                             );
@@ -391,7 +400,7 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
 
   Container getTimerView() {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 7, horizontal: 15),
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 18),
       decoration: BoxDecoration(
         color: AppColors.redColor,
         borderRadius: BorderRadius.circular(25),
@@ -422,7 +431,9 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
         });
       } else {
         timer.cancel();
-        showTimeUpDialog();
+        if (widget.showTimer) {
+          showTimeUpDialog();
+        }
       }
     });
   }
@@ -434,14 +445,25 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
   }
 
   void showTimeUpDialog() {
+    if(!widget.showTimer)return;
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (_) => AlertDialog(
         backgroundColor: AppColors.homePageBackground,
-        title:  Text("Time Over",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600,color: AppColors.appBarColors),),
-        content:  Text(textAlign: TextAlign.center,
-          "Better luck for next time",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
+        title: Text(
+          "Time Over",
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
+            color: AppColors.appBarColors,
+          ),
+        ),
+        content: Text(
+          textAlign: TextAlign.center,
+          "Better luck for next time",
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        ),
         actions: [
           TextButton(
             onPressed: () async {
@@ -453,13 +475,20 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                   builder: (context) => ResultPage(
                     questions: widget.examList,
                     result: isPass,
-                    title: widget.title,
-                   
+                    title: widget.title, showTimer: widget.showTimer,
+                    
                   ),
                 ),
               );
             },
-            child:  Text("OK",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: AppColors.appBarColors),),
+            child: Text(
+              "OK",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: AppColors.appBarColors,
+              ),
+            ),
           ),
         ],
       ),
@@ -477,5 +506,4 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
     _pageController.dispose();
     super.dispose();
   }
-  
 }

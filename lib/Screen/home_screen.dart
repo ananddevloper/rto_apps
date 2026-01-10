@@ -56,7 +56,6 @@ List<QuestionModel> homeScreenLoadingList = []; /////////////////////
     'title': 'Test', 
     'titleColor': AppColors.yellowDarkColors,
     'onTap': () {
-      
       Navigator.push(context, MaterialPageRoute(builder: (context) => IntroductionPage(title: 'Exam', examList: homeScreenLoadingList,)));
     },
     },
