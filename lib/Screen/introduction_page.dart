@@ -63,7 +63,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                       ),
                       SizedBox(height: 20),
                       Text(
-                        '• Subject like Rules and Regulations of traffic, and traffic signage\'s are include in the test.\n\n • 15 question are asked in the test at rendom, out which 9 questions are required to be answered correctly to pass the test.\n\n • 30 seconds are allowed to answer each question. ',
+                        '• Subject like Rules and Regulations of traffic, and traffic signage\'s are include in the test.\n\n • 15 question are asked in the test at rendom, out which 11 questions are required to be answered correctly to pass the test.\n\n • 40 seconds are allowed to answer each question. \n\n• The result will be displayed after submission.  ',
                         style: TextStyle(
                           fontSize: 17,
                           color: AppColors.blackColor,

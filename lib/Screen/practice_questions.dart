@@ -29,372 +29,384 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
   int wrongCount = 0;
 
   Timer? _timer;
-  int secondsLeft = 10 * 30;
+  int secondsLeft = 10 * 60;
 
   @override
   void initState() {
     super.initState();
-    if (widget.showTimer) 
-    {
+    if (widget.showTimer) {
       startTestTimer();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.welcomeBackgroundColor,
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: AppColors.whiteColors),
-        backgroundColor: AppColors.appBarColors,
-        title: Text(
-          '${widget.title}',
-          style: TextStyle(
-            color: AppColors.whiteColors,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+    return WillPopScope(
+      onWillPop: () async {
+        if (widget.showTimer) {
+          return await showExitConfirmation();
+        }
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.welcomeBackgroundColor,
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: AppColors.whiteColors),
+          backgroundColor: AppColors.appBarColors,
+          title: Text(
+            '${widget.title}',
+            style: TextStyle(
+              color: AppColors.whiteColors,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
           ),
+          // actions: widget.showTimer ? [getTimerView()] : [],
         ),
-       // actions: widget.showTimer ? [getTimerView()] : [],
-      ),
 
-      body: widget.examList.isEmpty
-          ? Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 7,
-                          horizontal: 15,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.appBarColors,
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              'Questions:- ${currentIndex + 1}/${widget.examList.length}',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.whiteColors,
-                              ),
-                            ),
-                            
-                          ],
-                        ),
-                      ),
-                      widget.showTimer ? getTimerView() : Container(),
-                      if(!widget.showTimer)
-                      Row(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 5,
-                              horizontal: 15,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.greenColors,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(25),
-                                // topRight: Radius.circular(25),
-                                bottomLeft: Radius.circular(25),
-
-                                // bottomRight: Radius.circular(25),
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.check,
-                                  color: AppColors.whiteColors,
-                                  size: 20,
-                                ),
-                                SizedBox(width: 3),
-                                Text(
-                                  rightCount.toString(),
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.whiteColors,
-                                  ),
-                                ),
-                              ],
-                            ),
+        body: widget.examList.isEmpty
+            ? Center(child: CircularProgressIndicator())
+            : Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 7,
+                            horizontal: 15,
                           ),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 5,
-                              horizontal: 15,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.redColor,
-                              borderRadius: BorderRadius.only(
-                                // topLeft: Radius.circular(0),
-                                topRight: Radius.circular(25),
-                                // bottomLeft: Radius.circular(25),
-                                bottomRight: Radius.circular(25),
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.close,
-                                  color: AppColors.whiteColors,
-                                  size: 20,
-                                ),
-                                SizedBox(width: 3),
-                                Text(
-                                  wrongCount.toString(),
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.whiteColors,
-                                  ),
-                                ),
-                              ],
-                            ),
+                          decoration: BoxDecoration(
+                            color: AppColors.appBarColors,
+                            borderRadius: BorderRadius.circular(25),
                           ),
-                        ],
-                      ),
-
-                      // getTimerView(),
-                    ],
-                  ),
-
-                  Expanded(
-                    child: PageView.builder(
-                      itemCount: widget.examList.length,
-                      controller: _pageController,
-                      physics: const NeverScrollableScrollPhysics(),
-                      onPageChanged: (index) {
-                        setState(() {
-                          currentIndex = index;
-                        });
-                      },
-                      itemBuilder: (context, index) {
-                        final questionModel = widget.examList[index];
-                        return SingleChildScrollView(
-                          child: Column(
+                          child: Row(
                             children: [
-                              SizedBox(height: 15),
-                              Card(
-                                elevation: 2,
-                                color: AppColors.whiteColors,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Q.${currentIndex + 1}.',
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                              color: AppColors.blackColor,
-                                            ),
-                                          ),
-                                          SizedBox(width: 10),
-                                          Expanded(
-                                            child: Text(
-                                              "${questionModel.question}",
-                                              style: TextStyle(
-                                                fontSize: 19,
-                                                fontWeight: FontWeight.w400,
-                                                
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      if (questionModel.image != null &&
-                                          questionModel.image!.isNotEmpty)
-                                        Center(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Image.network(
-                                              questionModel.image ?? '',
-                                              height: 150,
-                                              width: 150,
-                                            ),
-                                          ),
-                                        ),
-                                    ],
-                                  ),
+                              Text(
+                                'Questions:- ${currentIndex + 1}/${widget.examList.length}',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.whiteColors,
                                 ),
                               ),
-                              SizedBox(height: 10),
-                              ListView.separated(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        if (questionModel.isAnswered) return;
-                                        // Answer select karo
-                                        questionModel.selectAnswer(
-                                          questionModel.options[index],
-                                        );
-                                        //Count logic
-                                        if (questionModel.isCorrect(
-                                          questionModel.options[index],
-                                        )) {
-                                          rightCount++;
-                                        } else {
-                                          wrongCount++;
-                                        }
-                                      });
-                                    },
-                                    child: Card(
-                                      elevation: 2,
-                                      color: questionModel.getOptionColor(
-                                        questionModel.options[index],
+                            ],
+                          ),
+                        ),
+                        widget.showTimer ? getTimerView() : Container(),
+                        if (!widget.showTimer)
+                          Row(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 5,
+                                  horizontal: 15,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.greenColors,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(25),
+                                    // topRight: Radius.circular(25),
+                                    bottomLeft: Radius.circular(25),
+
+                                    // bottomRight: Radius.circular(25),
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.check,
+                                      color: AppColors.whiteColors,
+                                      size: 20,
+                                    ),
+                                    SizedBox(width: 3),
+                                    Text(
+                                      rightCount.toString(),
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColors.whiteColors,
                                       ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 5,
+                                  horizontal: 15,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.redColor,
+                                  borderRadius: BorderRadius.only(
+                                    // topLeft: Radius.circular(0),
+                                    topRight: Radius.circular(25),
+                                    // bottomLeft: Radius.circular(25),
+                                    bottomRight: Radius.circular(25),
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.close,
+                                      color: AppColors.whiteColors,
+                                      size: 20,
+                                    ),
+                                    SizedBox(width: 3),
+                                    Text(
+                                      wrongCount.toString(),
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColors.whiteColors,
                                       ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 12.0,
-                                          horizontal: 15,
-                                        ),
-                                        child: Row(
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+
+                        // getTimerView(),
+                      ],
+                    ),
+
+                    Expanded(
+                      child: PageView.builder(
+                        itemCount: widget.examList.length,
+                        controller: _pageController,
+                        physics: const NeverScrollableScrollPhysics(),
+                        onPageChanged: (index) {
+                          setState(() {
+                            currentIndex = index;
+                          });
+                        },
+                        itemBuilder: (context, index) {
+                          final questionModel = widget.examList[index];
+                          return SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                SizedBox(height: 15),
+                                Card(
+                                  elevation: 2,
+                                  color: AppColors.whiteColors,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              '${optionLabel(index)}.',
+                                              'Q.${currentIndex + 1}.',
                                               style: TextStyle(
-                                                fontSize: 17,
-                                                
+                                                fontSize: 19,
+                                                fontWeight: FontWeight.w600,
                                                 color: AppColors.blackColor,
                                               ),
                                             ),
                                             SizedBox(width: 10),
                                             Expanded(
                                               child: Text(
-                                                questionModel.options[index],
+                                                "${questionModel.question}",
                                                 style: TextStyle(
-                                                  fontSize: 17,
-                                                  
+                                                  fontSize: 19,
+                                                  fontWeight: FontWeight.w600,
                                                 ),
                                               ),
                                             ),
                                           ],
                                         ),
-                                      ),
+                                        if (questionModel.image != null &&
+                                            questionModel.image!.isNotEmpty)
+                                          Center(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(
+                                                8.0,
+                                              ),
+                                              child: Image.network(
+                                                questionModel.image ?? '',
+                                                height: 150,
+                                                width: 150,
+                                              ),
+                                            ),
+                                          ),
+                                      ],
                                     ),
-                                  );
-                                },
-                                separatorBuilder: (context, index) => Divider(
-                                  color: Colors.transparent,
-                                  height: 10,
+                                  ),
                                 ),
-                                itemCount: questionModel.options.length,
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Card(
-                        elevation: 3,
-                        color: AppColors.whiteColors,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(60),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 40,
-                            vertical: 14,
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              if (currentIndex > 0) {
-                                _pageController.previousPage(
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeInOut,
-                                );
-                              }
-                            },
-                            child: Text(
-                              'Previous',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: AppColors.appBarColors,
-                                fontWeight: FontWeight.w600,
-                              ),
+                                SizedBox(height: 10),
+                                ListView.separated(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          if (questionModel.isAnswered) return;
+                                          // Answer select karo
+                                          questionModel.selectAnswer(
+                                            questionModel.options[index],
+                                          );
+                                          //Count logic
+                                          if (questionModel.isCorrect(
+                                            questionModel.options[index],
+                                          )) {
+                                            rightCount++;
+                                          } else {
+                                            wrongCount++;
+                                          }
+                                        });
+                                      },
+                                      child: Card(
+                                        elevation: 2,
+                                        color: questionModel.getOptionColor(
+                                          questionModel.options[index],
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 12.0,
+                                            horizontal: 15,
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                '${optionLabel(index)}.',
+                                                style: TextStyle(
+                                                  fontSize: 17,
+
+                                                  color: AppColors.blackColor,
+                                                ),
+                                              ),
+                                              SizedBox(width: 10),
+                                              Expanded(
+                                                child: Text(
+                                                  questionModel.options[index],
+                                                  style: TextStyle(
+                                                    fontSize: 17,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) => Divider(
+                                    color: Colors.transparent,
+                                    height: 10,
+                                  ),
+                                  itemCount: questionModel.options.length,
+                                ),
+                              ],
                             ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          if (currentIndex < widget.examList.length - 1) {
-                            _pageController.nextPage(
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeInOut,
-                            );
-                          } else {
-                            bool isPass = rightCount >= 12;
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ResultPage(
-                                  questions: widget.examList,
-                                  result: isPass,
-                                  title: widget.title, showTimer: widget.showTimer,
-                                ),
-                              ),
-                            );
-                          }
+                          );
                         },
-                        child: Card(
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Card(
                           elevation: 3,
-                          color: AppColors.appBarColors,
+                          color: AppColors.whiteColors,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(60),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 50,
-                              vertical: 15,
+                              horizontal: 40,
+                              vertical: 14,
                             ),
-                            child: Text(
-                              currentIndex == widget.examList.length - 1
-                                  ? 'Submit'
-                                  : 'Next',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: AppColors.whiteColors,
-                                fontWeight: FontWeight.w600,
+                            child: GestureDetector(
+                              onTap: () {
+                                if (currentIndex > 0) {
+                                  _pageController.previousPage(
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeInOut,
+                                  );
+                                }
+                              },
+                              child: Text(
+                                'Previous',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: AppColors.appBarColors,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        GestureDetector(
+                          onTap: () {
+                            if (currentIndex < widget.examList.length - 1) {
+                              _pageController.nextPage(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                              );
+                            } else {
+                              bool isPass = rightCount >= 12;
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ResultPage(
+                                    questions: widget.examList,
+                                    result: isPass,
+                                    title: widget.title,
+                                    showTimer: widget.showTimer,
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                          child: Card(
+                            elevation: 3,
+                            color: AppColors.appBarColors,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(60),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 50,
+                                vertical: 15,
+                              ),
+                              child: Text(
+                                currentIndex == widget.examList.length - 1
+                                    ? 'Submit'
+                                    : 'Next',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: AppColors.whiteColors,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
+      ),
     );
   }
 
@@ -445,7 +457,7 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
   }
 
   void showTimeUpDialog() {
-    if(!widget.showTimer)return;
+    if (!widget.showTimer) return;
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -468,15 +480,15 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
           TextButton(
             onPressed: () async {
               Navigator.pop(context);
-              bool isPass = rightCount >= 12;
+              bool isPass = rightCount >= 11;
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => ResultPage(
                     questions: widget.examList,
                     result: isPass,
-                    title: widget.title, showTimer: widget.showTimer,
-                    
+                    title: widget.title,
+                    showTimer: widget.showTimer,
                   ),
                 ),
               );
@@ -505,5 +517,50 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
     _timer?.cancel();
     _pageController.dispose();
     super.dispose();
+  }
+
+  Future<bool> showExitConfirmation() async {
+    return await showDialog<bool>(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => AlertDialog(
+            title: Text(
+              'Exit Exam?',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w600,
+                color: AppColors.appBarColors,
+              ),
+            ),
+            content:  Text(
+              'If you want to exit from the exam, you will lost your progress.',style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600,color: AppColors.blackColor),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: Text(
+                  'No',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.appBarColors,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: Text(
+                  'Yes',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.appBarColors,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ) ??
+        false;
   }
 }

@@ -53,7 +53,7 @@ List<QuestionModel> homeScreenLoadingList = []; /////////////////////
     {
       'cardColor': AppColors.yellowLightColoe,
       'icon': SvgPicture.asset(AppIcon.test),
-    'title': 'Test', 
+    'title': 'Exam', 
     'titleColor': AppColors.yellowDarkColors,
     'onTap': () {
       Navigator.push(context, MaterialPageRoute(builder: (context) => IntroductionPage(title: 'Exam', examList: homeScreenLoadingList,)));
