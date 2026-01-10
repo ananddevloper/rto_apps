@@ -32,15 +32,7 @@ List<QuestionModel> homeScreenLoadingList = []; /////////////////////
       Navigator.push(context, MaterialPageRoute(builder: (context) => QuestionBank(questionList: homeScreenLoadingList.where((q)=> q.image == null || q.image!.isEmpty).toList())));
     }
     },
-    {
-      'cardColor': AppColors.appBarColors,
-      'icon': SvgPicture.asset(AppIcon.aToZ),
-    'title': 'Practical Questions', 
-    'titleColor': AppColors.appBarColors,
-    'onTap':  () {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => PracticeQuestionSectionPage(practiceQuestions: homeScreenLoadingList,)));
-    },
-    },
+    
     {
       'cardColor': AppColors.greenColors,
       'icon': SvgPicture.asset(AppIcon.roadSign),
@@ -48,6 +40,15 @@ List<QuestionModel> homeScreenLoadingList = []; /////////////////////
     'titleColor': AppColors.greenColors,
     'onTap': () {
       Navigator.push(context, MaterialPageRoute(builder: (context) => RoadSignScreen(roadSign: homeScreenLoadingList.where((q)=> q.image !=null || (q.image?.isNotEmpty ?? false)).toList())));
+    },
+    },
+    {
+      'cardColor': AppColors.appBarColors,
+      'icon': SvgPicture.asset(AppIcon.aToZ),
+    'title': 'Practical Questions', 
+    'titleColor': AppColors.appBarColors,
+    'onTap':  () {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => PracticeQuestionSectionPage(practiceQuestions: homeScreenLoadingList,)));
     },
     },
     {
@@ -78,7 +79,7 @@ List<QuestionModel> homeScreenLoadingList = []; /////////////////////
         iconTheme: IconThemeData(color: AppColors.whiteColors),
         backgroundColor: AppColors.appBarColors,
 
-        leading: Icon(Icons.menu),
+        
         title: Text(
           'Home',
           style: TextStyle(
@@ -87,7 +88,7 @@ List<QuestionModel> homeScreenLoadingList = []; /////////////////////
             color: AppColors.whiteColors,
           ),
         ),
-        actions: [SvgPicture.asset(AppIcon.dots)],
+        
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),

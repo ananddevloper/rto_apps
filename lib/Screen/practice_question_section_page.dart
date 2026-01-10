@@ -48,7 +48,7 @@ class _PracticeQuestionSectionPageState
           'Practice Questions',
           style: TextStyle(
             color: AppColors.whiteColors,
-            fontSize: 20,
+            fontSize: 25,
             fontWeight: FontWeight.bold,
           ),
         ),

@@ -532,10 +532,15 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                 color: AppColors.appBarColors,
               ),
             ),
-            content:  Text(
-              'If you want to exit from the exam, you will lost your progress.',style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600,color: AppColors.blackColor),
+            content: Text(
+              'If you want to exit from the exam, you will lost your progress.',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+                color: AppColors.blackColor,
+              ),
             ),
-            actions: [
+            actions:[
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
                 child: Text(

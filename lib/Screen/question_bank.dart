@@ -26,7 +26,7 @@ class _QuestionBankState extends State<QuestionBank> {
           'Question Bank',
           style: TextStyle(
             color: AppColors.whiteColors,
-            fontSize: 20,
+            fontSize: 25,
             fontWeight: FontWeight.bold,
           ),
         ),

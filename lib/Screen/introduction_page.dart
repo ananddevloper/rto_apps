@@ -30,7 +30,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
           'Exam',
           style: TextStyle(
             fontSize: 25,
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.bold,
             color: AppColors.whiteColors,
           ),
         ),
