@@ -14,7 +14,7 @@ class QuestionBank extends StatefulWidget {
 
 class _QuestionBankState extends State<QuestionBank> {
   List<QuestionModel> questionBankList = [];
-
+  //ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,6 +23,7 @@ class _QuestionBankState extends State<QuestionBank> {
         iconTheme: IconThemeData(color: AppColors.whiteColors),
         backgroundColor: AppColors.appBarColors,
         title: Text(
+          textAlign: TextAlign.center,
           'Question Bank',
           style: TextStyle(
             color: AppColors.whiteColors,
@@ -33,40 +34,54 @@ class _QuestionBankState extends State<QuestionBank> {
       ),
       body: questionBankList.isEmpty
           ? Center(child: CircularProgressIndicator())
-          : ListView.separated(
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                final questionSets = questionBankList[index]; ////
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    color: AppColors.whiteColors,
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Q.${index + 1}.  ${questionSets.question}',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
+          : Scrollbar(
+         //   controller: scrollController,
+            //  thumbVisibility: true,
+              thickness: 10,
+              radius: Radius.circular(30),
+              child: ListView.separated(
+              //  controller: scrollController,
+                itemBuilder: (context, index) {
+                  final questionSets = questionBankList[index]; ////
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Card(
+                      color: AppColors.whiteColors,
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Q.${index + 1}.  ${questionSets.question}',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          ),
-                          
-                          SizedBox(height: 10,),
-                          Text('Answer:- ${questionSets.correctAnswer}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: AppColors.greenColors),)
-                        ],
+
+                            SizedBox(height: 10),
+                            Text(
+                              'Answer:- ${questionSets.correctAnswer}',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.greenColors,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
-              separatorBuilder: (context, index) => SizedBox(height: 5),
-              itemCount: questionBankList.length,
+                  );
+                },
+                separatorBuilder: (context, index) => SizedBox(height: 5),
+                itemCount: questionBankList.length,
+              ),
             ),
     );
   }
@@ -74,8 +89,6 @@ class _QuestionBankState extends State<QuestionBank> {
   @override
   void initState() {
     super.initState();
-   questionBankList = widget.questionList;
+    questionBankList = widget.questionList;
   }
-
-  
 }

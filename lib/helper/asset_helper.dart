@@ -6,9 +6,10 @@ class AppIcon {
   static const aToZ = '$_baseIcon/A TO Z.svg';
   static const roadSign = '$_baseIcon/RoadSigns.svg';
   static const study = '$_baseIcon/Study.svg';
-  static const testHistory = '$_baseIcon/Test_History.svg';
+  static const testHistory = '$_baseIcon/tests_historys.svg';
   static const arrow = '$_baseIcon/Arrow.svg';
-  static const test = '$_baseIcon/Test.svg';
+  static const exam = '$_baseIcon/exam.svg';
+  static const practiceQuestion = '$_baseIcon/Practice.svg';
 }
 
 class AppImage {

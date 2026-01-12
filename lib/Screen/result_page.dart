@@ -28,7 +28,6 @@ class _ResultPageState extends State<ResultPage> {
         .where((q) => q.selectedAnswer == q.correctAnswer)
         .length; //Add This Line
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +71,7 @@ class _ResultPageState extends State<ResultPage> {
                       SizedBox(height: 20),
                       Text(
                         textAlign: TextAlign.center,
-                        'You\'ve just cleared driving licence test.\n Practice more to increses your success\n chances in actual test.',
+                        'You\'ve just cleared driving licence test exam.\n Practice more to increses your success\n chances in actual test.',
                         style: TextStyle(
                           color: AppColors.whiteColors,
                           fontSize: 16,
@@ -100,7 +99,6 @@ class _ResultPageState extends State<ResultPage> {
             ),
           ),
         ),
-
         Padding(
           padding: const EdgeInsets.only(bottom: 0),
           child: Lottie.asset(AppAnimation.championAnimation),
@@ -171,11 +169,9 @@ class _ResultPageState extends State<ResultPage> {
                         Expanded(
                           child: InkWell(
                             onTap: () {
-
                               for (var q in widget.questions){
                                 q.reset();
                               } ////////////
-
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
@@ -214,36 +210,30 @@ class _ResultPageState extends State<ResultPage> {
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.whiteColors,
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-          child: Row(
-            mainAxisAlignment: .center,
-            children: [
-              Icon(
-                icon,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        child: Row(
+          mainAxisAlignment: .center,
+          children: [
+            Icon(
+              icon,
+              color: widget.result
+                  ? AppColors.greenColors
+                  : AppColors.redColor,
+              size: 35,
+            ),
+            SizedBox(width: 10),
+            Text(
+              title,
+              style: TextStyle(
                 color: widget.result
                     ? AppColors.greenColors
                     : AppColors.redColor,
-                size: 35,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
               ),
-              SizedBox(width: 10),
-              Text(
-                title,
-                style: TextStyle(
-                  color: widget.result
-                      ? AppColors.greenColors
-                      : AppColors.redColor,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -26,7 +26,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
       appBar: AppBar(
         iconTheme: IconThemeData(color: AppColors.whiteColors),
         backgroundColor: AppColors.appBarColors,
-        title: Text(
+        title: Text(textAlign: TextAlign.center,
           'Exam',
           style: TextStyle(
             fontSize: 25,

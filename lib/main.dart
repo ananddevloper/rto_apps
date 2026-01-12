@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rto_apps/Screen/home_screen.dart';
 import 'package:rto_apps/Screen/introduction_page.dart';
+import 'package:rto_apps/Screen/practice_question_result_page.dart';
 import 'package:rto_apps/Screen/practice_question_section_page.dart';
 import 'package:rto_apps/Screen/practice_questions.dart';
 import 'package:rto_apps/Screen/spleshscreen.dart';
@@ -22,13 +23,12 @@ class MyApp extends StatelessWidget {
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
       home: Spleshscreen(),
-      
+      // PracticeQuestionResultPage(questions: [],)
       
      
     );
   }
 }
-
 class MyHomePage {
   const MyHomePage();
 }

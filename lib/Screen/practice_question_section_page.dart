@@ -21,8 +21,6 @@ class _PracticeQuestionSectionPageState
     extends State<PracticeQuestionSectionPage> {
   List<QuestionModel> allQuestions = [];
 
-  ///
-
   @override
   void initState() {
     // TODO: implement initState
@@ -44,7 +42,7 @@ class _PracticeQuestionSectionPageState
       backgroundColor: AppColors.homePageBackground,
       appBar: AppBar(
         iconTheme: IconThemeData(color: AppColors.whiteColors),
-        title: Text(
+        title: Text(textAlign: TextAlign.center,
           'Practice Questions',
           style: TextStyle(
             color: AppColors.whiteColors,
@@ -56,57 +54,55 @@ class _PracticeQuestionSectionPageState
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              ListView.separated(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 2,
-                    color: AppColors.whiteColors,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 20, 20, 20),
-                      child: practiceQuestionSection(
-                        index: practiceQuestionSectionList[index].index,
-                        title: practiceQuestionSectionList[index].title,
-                        onTap: () {
-                          int setIndex =
-                              practiceQuestionSectionList[index].index;
-                          int startIndex = (setIndex - 1) * 31;
-                          int endIndex = startIndex + 30;
-
-                          List<QuestionModel> slectedQuestions = allQuestions
-                              .sublist(
-                                startIndex,
-                                endIndex > allQuestions.length
-                                    ? allQuestions.length
-                                    : endIndex,
-                              );
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PracticeQuestions(
-                                title: practiceQuestionSectionList[index].title,
-                                examList: slectedQuestions,
-                                showTimer: false,
-                              ),
-                            ),
+        child: Scrollbar(
+         // thumbVisibility: true,
+          thickness: 10,
+          radius: Radius.circular(30),
+          child: ListView.separated(
+            shrinkWrap: true,            
+            itemBuilder: (context, index) {
+              return Card(
+                elevation: 2,
+                color: AppColors.whiteColors,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 20, 20, 20),
+                  child: practiceQuestionSection(
+                    index: practiceQuestionSectionList[index].index,
+                    title: practiceQuestionSectionList[index].title,
+                    onTap: () {
+                      int setIndex =
+                          practiceQuestionSectionList[index].index;
+                      int startIndex = (setIndex - 1) * 31;
+                      int endIndex = startIndex + 30;
+          
+                      List<QuestionModel> slectedQuestions = allQuestions
+                          .sublist(
+                            startIndex,
+                            endIndex > allQuestions.length
+                                ? allQuestions.length
+                                : endIndex,
                           );
-                        },
-                      ),
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) =>
-                    Divider(color: Colors.transparent),
-                itemCount: practiceQuestionSectionList.length,
-              ),
-            ],
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PracticeQuestions(
+                            title: practiceQuestionSectionList[index].title,
+                            examList: slectedQuestions,
+                            showTimer: false,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
+            separatorBuilder: (context, index) =>
+                Divider(color: Colors.transparent),
+            itemCount: practiceQuestionSectionList.length,
           ),
         ),
       ),

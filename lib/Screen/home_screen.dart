@@ -19,7 +19,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> { 
-
 List<QuestionModel> homeScreenLoadingList = []; /////////////////////
 
   List<Map<String, dynamic>> get homeScreenList => [
@@ -32,7 +31,6 @@ List<QuestionModel> homeScreenLoadingList = []; /////////////////////
       Navigator.push(context, MaterialPageRoute(builder: (context) => QuestionBank(questionList: homeScreenLoadingList.where((q)=> q.image == null || q.image!.isEmpty).toList())));
     }
     },
-    
     {
       'cardColor': AppColors.greenColors,
       'icon': SvgPicture.asset(AppIcon.roadSign),
@@ -44,7 +42,7 @@ List<QuestionModel> homeScreenLoadingList = []; /////////////////////
     },
     {
       'cardColor': AppColors.appBarColors,
-      'icon': SvgPicture.asset(AppIcon.aToZ),
+      'icon': SvgPicture.asset(AppIcon.practiceQuestion),
     'title': 'Practical Questions', 
     'titleColor': AppColors.appBarColors,
     'onTap':  () {
@@ -53,17 +51,16 @@ List<QuestionModel> homeScreenLoadingList = []; /////////////////////
     },
     {
       'cardColor': AppColors.yellowLightColoe,
-      'icon': SvgPicture.asset(AppIcon.test),
+      'icon': SvgPicture.asset(AppIcon.exam),
     'title': 'Exam', 
     'titleColor': AppColors.yellowDarkColors,
     'onTap': () {
       Navigator.push(context, MaterialPageRoute(builder: (context) => IntroductionPage(title: 'Exam', examList: homeScreenLoadingList,)));
     },
     },
-    
     {
       'cardColor': AppColors.lightOrangeColor,
-      'icon': SvgPicture.asset(AppIcon.test),
+      'icon': SvgPicture.asset(AppIcon.study),
     'title': 'Test History', 
     'titleColor': AppColors.lightOrangeColor,
     'onTap': (){
@@ -78,8 +75,6 @@ List<QuestionModel> homeScreenLoadingList = []; /////////////////////
       appBar: AppBar(
         iconTheme: IconThemeData(color: AppColors.whiteColors),
         backgroundColor: AppColors.appBarColors,
-
-        
         title: Text(
           'Home',
           style: TextStyle(
@@ -88,7 +83,7 @@ List<QuestionModel> homeScreenLoadingList = []; /////////////////////
             color: AppColors.whiteColors,
           ),
         ),
-        
+       
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),

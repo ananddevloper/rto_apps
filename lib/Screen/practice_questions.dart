@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:rto_apps/Screen/practice_question_result_page.dart';
 import 'package:rto_apps/Screen/question_model.dart';
 import 'package:rto_apps/Screen/result_page.dart';
 import 'package:rto_apps/helper/app_colors.dart';
@@ -27,10 +28,8 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
   int currentIndex = 0;
   int rightCount = 0;
   int wrongCount = 0;
-
   Timer? _timer;
   int secondsLeft = 10 * 60;
-
   @override
   void initState() {
     super.initState();
@@ -54,11 +53,11 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
           iconTheme: IconThemeData(color: AppColors.whiteColors),
           backgroundColor: AppColors.appBarColors,
           title: Text(
-            '${widget.title}',
+            widget.showTimer ? 'Exam' : widget.title,
             style: TextStyle(
               color: AppColors.whiteColors,
               fontSize: 20,
-              fontWeight: FontWeight.bold,
+              fontWeight: widget.showTimer ? FontWeight.bold : FontWeight.w600,
             ),
           ),
           // actions: widget.showTimer ? [getTimerView()] : [],
@@ -113,7 +112,6 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                                     topLeft: Radius.circular(25),
                                     // topRight: Radius.circular(25),
                                     bottomLeft: Radius.circular(25),
-
                                     // bottomRight: Radius.circular(25),
                                   ),
                                 ),
@@ -363,18 +361,32 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                                 curve: Curves.easeInOut,
                               );
                             } else {
-                              bool isPass = rightCount >= 12;
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ResultPage(
-                                    questions: widget.examList,
-                                    result: isPass,
-                                    title: widget.title,
-                                    showTimer: widget.showTimer,
+                              if (widget.showTimer) {
+                                bool isPass = rightCount >= 12;
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ResultPage(
+                                      questions: widget.examList,
+                                      result: isPass,
+                                      title: widget.title,
+                                      showTimer: widget.showTimer,
+                                    ),
                                   ),
-                                ),
-                              );
+                                );
+                              } else {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        PracticeQuestionResultPage(
+                                          questions: widget.examList,
+                                          result: widget.showTimer,
+                                          title: widget.title,
+                                        ),
+                                  ),
+                                );
+                              }
                             }
                           },
                           child: Card(
@@ -540,7 +552,7 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                 color: AppColors.blackColor,
               ),
             ),
-            actions:[
+            actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
                 child: Text(

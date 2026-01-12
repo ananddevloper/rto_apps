@@ -18,7 +18,7 @@ class _RoadSignScreenState extends State<RoadSignScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.appBarColors,
         iconTheme: IconThemeData(color: Colors.white),
-        title: Text(
+        title: Text(textAlign: TextAlign.center,
           'Road Signs',
           style: TextStyle(
             fontSize: 25,
@@ -28,35 +28,44 @@ class _RoadSignScreenState extends State<RoadSignScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: ListView.separated(
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            final roadSigns = roadSignList[index]; ////
-            return Card(
-              elevation: 2,
-              color: AppColors.whiteColors,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: Row(
-                  children: [
-                    Text('${index+1}.', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
-                    SizedBox(width: 2,),
-                    Image.network(roadSigns.image ?? '', height: 150, width: 150 ,), 
-                    Expanded(child: Text('${roadSigns.correctAnswer}',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: AppColors.blackColor,),))
-                  ],
+        padding: const EdgeInsets.all(7.0),
+        child: Scrollbar(
+          thickness: 10,
+          radius: Radius.circular(30),
+          child: ListView.separated(
+           
+            itemBuilder: (context, index) {
+              final roadSigns = roadSignList[index]; ////
+              return Card(
+                elevation: 2,
+                color: AppColors.whiteColors,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                
-              ),
-            );
-          },
-          separatorBuilder: (context, index) {
-            return SizedBox(height: 10);
-          },
-          itemCount: roadSignList.length,
+                child: Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: 
+                  Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('${index+1}.', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600)),
+                      Row(
+                        children: [                         
+                          Image.network(roadSigns.image ?? '', height: 130, width: 100 ,), 
+                          SizedBox(width: 3,),
+                          Expanded(child: Text('${roadSigns.correctAnswer}',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: AppColors.blackColor,),))
+                        ],
+                      ),
+                    ],
+                  ),
+                  
+                ),
+              );
+            },
+            separatorBuilder: (context, index) {
+              return SizedBox(height: 10);
+            },
+            itemCount: roadSignList.length,
+          ),
         ),
       ),
     );
