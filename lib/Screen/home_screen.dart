@@ -2,10 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:rto_apps/Screen/exam_history.dart';
 import 'package:rto_apps/Screen/introduction_page.dart';
 import 'package:rto_apps/Screen/practice_question_section_page.dart';
 import 'package:rto_apps/Screen/practice_questions.dart';
-import 'package:rto_apps/Screen/question_model.dart';
+import 'package:rto_apps/Screen/Rto_Modals/question_model.dart';
 import 'package:rto_apps/Screen/question_bank.dart';
 import 'package:rto_apps/Screen/road_sign.dart';
 
@@ -18,53 +19,106 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> { 
-List<QuestionModel> homeScreenLoadingList = []; /////////////////////
+class _HomeScreenState extends State<HomeScreen> {
+  List<QuestionModel> homeScreenLoadingList = []; /////////////////////
 
   List<Map<String, dynamic>> get homeScreenList => [
     {
       'cardColor': AppColors.redColor,
       'icon': SvgPicture.asset(AppIcon.study),
-    'title': 'Question Bank', 
-    'titleColor': AppColors.redColor,
-    'onTap':() {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => QuestionBank(questionList: homeScreenLoadingList.where((q)=> q.image == null || q.image!.isEmpty).toList())));
-    }
+      'title': 'Question Bank',
+      'titleColor': AppColors.redColor,
+      'arrowIcon': SvgPicture.asset(AppIcon.arrow, color: AppColors.redColor),
+      'onTap': () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => QuestionBank(
+              questionList: homeScreenLoadingList
+                  .where((q) => q.image == null || q.image!.isEmpty)
+                  .toList(),
+            ),
+          ),
+        );
+      },
     },
     {
       'cardColor': AppColors.greenColors,
       'icon': SvgPicture.asset(AppIcon.roadSign),
-    'title': 'Road Signs', 
-    'titleColor': AppColors.greenColors,
-    'onTap': () {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => RoadSignScreen(roadSign: homeScreenLoadingList.where((q)=> q.image !=null || (q.image?.isNotEmpty ?? false)).toList())));
-    },
+      'title': 'Road Signs',
+      'titleColor': AppColors.greenColors,
+      'arrowIcon': SvgPicture.asset(
+        AppIcon.arrow,
+        color: AppColors.greenColors,
+      ),
+      'onTap': () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RoadSignScreen(
+              roadSign: homeScreenLoadingList
+                  .where(
+                    (q) => q.image != null || (q.image?.isNotEmpty ?? false),
+                  )
+                  .toList(),
+            ),
+          ),
+        );
+      },
     },
     {
       'cardColor': AppColors.appBarColors,
       'icon': SvgPicture.asset(AppIcon.practiceQuestion),
-    'title': 'Practical Questions', 
-    'titleColor': AppColors.appBarColors,
-    'onTap':  () {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => PracticeQuestionSectionPage(practiceQuestions: homeScreenLoadingList,)));
-    },
+      'title': 'Practical Questions',
+      'titleColor': AppColors.appBarColors,
+      'arrowIcon': SvgPicture.asset(
+        AppIcon.arrow,
+        color: AppColors.appBarColors,
+      ),
+      'onTap': () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PracticeQuestionSectionPage(
+              practiceQuestions: homeScreenLoadingList,
+            ),
+          ),
+        );
+      },
     },
     {
-      'cardColor': AppColors.yellowLightColoe,
+      'cardColor': AppColors.orange,
       'icon': SvgPicture.asset(AppIcon.exam),
-    'title': 'Exam', 
-    'titleColor': AppColors.yellowDarkColors,
-    'onTap': () {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => IntroductionPage(title: 'Exam', examList: homeScreenLoadingList,)));
-    },
+      'title': 'Exam',
+      'titleColor': AppColors.orange,
+      'arrowIcon': SvgPicture.asset(AppIcon.arrow, color: AppColors.orange),
+      'onTap': () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => IntroductionPage(
+              title: 'Exam',
+              examList: homeScreenLoadingList,
+            ),
+          ),
+        );
+      },
     },
     {
       'cardColor': AppColors.lightOrangeColor,
       'icon': SvgPicture.asset(AppIcon.study),
-    'title': 'Test History', 
-    'titleColor': AppColors.lightOrangeColor,
-    'onTap': (){
-    }
+      'title': 'Exam History',
+      'titleColor': AppColors.lightOrangeColor,
+      'arrowIcon': SvgPicture.asset(
+        AppIcon.arrow,
+        color: AppColors.lightOrangeColor,
+      ),
+      'onTap': () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ExamHistory()),
+        );
+      },
     },
   ];
 
@@ -73,26 +127,24 @@ List<QuestionModel> homeScreenLoadingList = []; /////////////////////
     return Scaffold(
       backgroundColor: AppColors.homePageBackground,
       appBar: AppBar(
+        centerTitle: true,
         iconTheme: IconThemeData(color: AppColors.whiteColors),
         backgroundColor: AppColors.appBarColors,
         title: Text(
-          'Home',
+          'RTO EXAM',
           style: TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
             color: AppColors.whiteColors,
+            fontWeight: FontWeight.w600,
           ),
         ),
-       
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
         child: SingleChildScrollView(
           child: Column(
-            
             children: [
               ListView.separated(
-                shrinkWrap:  true,
+                shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return Card(
@@ -106,9 +158,10 @@ List<QuestionModel> homeScreenLoadingList = []; /////////////////////
                       child: homeDesign(
                         cardColor: homeScreenList[index]['cardColor'],
                         icon: homeScreenList[index]['icon'],
-                        title: homeScreenList[index]['title'], 
+                        title: homeScreenList[index]['title'],
                         titleColor: homeScreenList[index]['titleColor'],
-                       onTap: homeScreenList[index]['onTap'],
+                        onTap: homeScreenList[index]['onTap'],
+                        arrowIcon: homeScreenList[index]['arrowIcon'],
                       ),
                     ),
                   );
@@ -128,11 +181,12 @@ List<QuestionModel> homeScreenLoadingList = []; /////////////////////
     required Color cardColor,
     required SvgPicture icon,
     required String title,
-    required Color titleColor, 
-   required Function()? onTap,
+    required Color titleColor,
+    required Function()? onTap,
+    required SvgPicture arrowIcon,
   }) {
     return InkWell(
-     onTap: onTap, 
+      onTap: onTap,
       child: Row(
         children: [
           Card(
@@ -142,30 +196,30 @@ List<QuestionModel> homeScreenLoadingList = []; /////////////////////
           SizedBox(width: 10),
           Text(
             title,
-            style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600,color: titleColor),
+            style: TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.w600,
+              color: titleColor,
+            ),
           ),
           Spacer(),
-          SvgPicture.asset(AppIcon.arrow),
+          arrowIcon,
         ],
       ),
     );
   }
 
-@override
+  @override
   void initState() {
     super.initState();
     loadingHomeData();
   }
-Future<void> loadingHomeData() async {
+
+  Future<void> loadingHomeData() async {
     final String response = await rootBundle.loadString(AppFile.dataJson);
     final List<dynamic> data = json.decode(response);
     final allQuestions = data.map((e) => QuestionModel.fromjson(e)).toList();
     homeScreenLoadingList = allQuestions;
-    setState(() {
-      
-    });
+    setState(() {});
   }
-
 }
-
-

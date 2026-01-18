@@ -12,4 +12,5 @@ static final greenColors = Color(0XFF28A164);
 static final redColor = Color(0XFFF35555);
 static final lightOrangeColor = Color(0XFFF38E55);
 static final blackColor = Color(0XFF000000);
+static final orange = Color(0xFFFF9900);
 }

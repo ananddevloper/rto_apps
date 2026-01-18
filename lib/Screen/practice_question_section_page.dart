@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rto_apps/Screen/introduction_page.dart';
 import 'package:rto_apps/Screen/practice_questions.dart';
-import 'package:rto_apps/Screen/question_model.dart';
+import 'package:rto_apps/Screen/Rto_Modals/question_model.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 import 'package:rto_apps/helper/asset_helper.dart';
 
@@ -29,7 +29,7 @@ class _PracticeQuestionSectionPageState
   }
 
   final List<PracticeQuestionSectionModal> practiceQuestionSectionList =
-      List.generate(20, (index) {
+      List.generate(27, (index) {
         return PracticeQuestionSectionModal(
           index: index + 1,
           title: 'Practice Questions Set ${index + 1}',
@@ -40,14 +40,14 @@ class _PracticeQuestionSectionPageState
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.homePageBackground,
-      appBar: AppBar(
+      appBar: AppBar(centerTitle: true,
         iconTheme: IconThemeData(color: AppColors.whiteColors),
         title: Text(textAlign: TextAlign.center,
           'Practice Questions',
           style: TextStyle(
             color: AppColors.whiteColors,
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
+            
+            fontWeight: FontWeight.w600,
           ),
         ),
         backgroundColor: AppColors.appBarColors,
@@ -77,6 +77,9 @@ class _PracticeQuestionSectionPageState
                           practiceQuestionSectionList[index].index;
                       int startIndex = (setIndex - 1) * 31;
                       int endIndex = startIndex + 30;
+
+                      print('start index $startIndex');
+                      print('end index $endIndex');
           
                       List<QuestionModel> slectedQuestions = allQuestions
                           .sublist(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rto_apps/Screen/home_screen.dart';
 import 'package:rto_apps/Screen/practice_question_section_page.dart';
 import 'package:rto_apps/Screen/practice_questions.dart';
-import 'package:rto_apps/Screen/question_model.dart';
+import 'package:rto_apps/Screen/Rto_Modals/question_model.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 
 class PracticeQuestionResultPage extends StatefulWidget {
@@ -37,7 +37,7 @@ class _PracticeQuestionResultPageState
             Card(
               color: AppColors.appBarColors,
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
                 child: Column(
                   children: [
                     Text(
@@ -74,15 +74,27 @@ class _PracticeQuestionResultPageState
                 color: AppColors.appBarColors,
               ),
             ),
+            SizedBox(height: 20),
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _getAnswerInfo(AppColors.redColor, 'Wrong'),
+                  _getAnswerInfo(AppColors.greenColors, 'Right'),
+                  _getAnswerInfo(AppColors.yellowDarkColors, 'Not Attempted'),
+                ],
+              ),
+            ),
 
             Expanded(
               child: GridView.builder(
-                padding: EdgeInsets.fromLTRB(0, 20, 0, 50),
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 6,
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 8,
                 ),
+
                 itemCount: widget.questions.length,
                 itemBuilder: (context, index) {
                   final question = widget.questions[index];
@@ -91,15 +103,19 @@ class _PracticeQuestionResultPageState
                   // bool isCorrect =
                   //     question.selectedAnswer == question.correctAnswer;
                   // Not attempted
-                  if(!question.isAnswered){
-                    cardColor = AppColors.whiteColors;  
-                    // Correct answer                 
-                  }else{
-                    
+
+                  if (!question.isAnswered) {
+                    cardColor = AppColors.yellowDarkColors;
+
+                    // Correct answer
+                  } else if (question.selectedAnswer ==
+                      question.correctAnswer) {
+                    cardColor = AppColors.greenColors;
+                  } else {
+                    cardColor = AppColors.redColor;
                   }
                   return Card(
-                    color: AppColors.greenColors,
-                        
+                    color: cardColor,
                     elevation: 2,
                     child: Center(
                       child: Text(
@@ -115,7 +131,7 @@ class _PracticeQuestionResultPageState
                 },
               ),
             ),
-            //  Divider(color: AppColors.appBarColors,thickness: 5),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -179,6 +195,7 @@ class _PracticeQuestionResultPageState
                     );
                   },
                   child: Card(
+                    // yeha se project panding hai
                     color: AppColors.appBarColors,
                     elevation: 2,
                     shape: RoundedRectangleBorder(
@@ -215,6 +232,23 @@ class _PracticeQuestionResultPageState
           ],
         ),
       ),
+    );
+  }
+
+  Row _getAnswerInfo(Color color, String text) {
+    return Row(
+      children: [
+        CircleAvatar(radius: 8, backgroundColor: color),
+        SizedBox(width: 5),
+        Text(
+          text,
+          style: TextStyle(
+            color: AppColors.appBarColors,
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
     );
   }
 }

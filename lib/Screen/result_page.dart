@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:rto_apps/Screen/exam_history.dart';
 import 'package:rto_apps/Screen/home_screen.dart';
 import 'package:rto_apps/Screen/practice_questions.dart';
-import 'package:rto_apps/Screen/question_model.dart';
+import 'package:rto_apps/Screen/Rto_Modals/question_model.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 import 'package:rto_apps/helper/asset_helper.dart';
 
@@ -28,6 +29,7 @@ class _ResultPageState extends State<ResultPage> {
         .where((q) => q.selectedAnswer == q.correctAnswer)
         .length; //Add This Line
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,50 +52,75 @@ class _ResultPageState extends State<ResultPage> {
             margin: EdgeInsets.all(20),
             elevation: 10,
             shadowColor: AppColors.greenColors,
-            child: Container(
-              decoration: BoxDecoration(
-                // borderRadius: BorderRadius.circular(0),
-              ),
-              width: double.maxFinite,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: Center(
-                  child: Column(
-                    children: [
-                      Text(
-                        'Congratulations',
-                        style: TextStyle(
-                          color: AppColors.whiteColors,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Congratulations',
+                      style: TextStyle(
+                        color: AppColors.whiteColors,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
                       ),
-                      SizedBox(height: 20),
-                      Text(
-                        textAlign: TextAlign.center,
-                        'You\'ve just cleared driving licence test exam.\n Practice more to increses your success\n chances in actual test.',
-                        style: TextStyle(
-                          color: AppColors.whiteColors,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      textAlign: TextAlign.center,
+                      'You\'ve just cleared driving licence test exam.\n Practice more to increses your success\n chances in actual test.',
+                      style: TextStyle(
+                        color: AppColors.whiteColors,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
                       ),
-                      SizedBox(height: 20), //// Add this lie
-                      getResultScore(title: 'Your Score is'),
-                      SizedBox(height: 12),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          getBasicDesign(icon: Icons.home, title: 'Home     '),
-                          getBasicDesign(
-                            icon: Icons.refresh,
-                            title: 'Try Again',
+                    ),
+                    SizedBox(height: 20), //// Add this lie
+                    getResultScore(title: 'Your Score is'),
+                    SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HomeScreen(),
+                                ),
+                                (route) => false,
+                              );
+                            },
+                            child: getBasicDesign(
+                              icon: Icons.home,
+                              title: 'Home',
+                            ),
                           ),
-                        ],
-                      ),
-                      //// Add this lie
-                    ],
-                  ),
+                        ),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              for (var q in widget.questions) {
+                                q.reset();
+                              }
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ExamHistory(),
+                                ),
+                              );
+                            },
+                            child: getBasicDesign(
+                              icon: Icons.refresh,
+                              title: 'Check History',
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    //// Add this lie
+                  ],
                 ),
               ),
             ),
@@ -101,7 +128,7 @@ class _ResultPageState extends State<ResultPage> {
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 0),
-          child: Lottie.asset(AppAnimation.championAnimation),
+          child: Lottie.asset(AppAnimation.championAnimation, height: 320),
         ),
       ],
     );
@@ -120,10 +147,10 @@ class _ResultPageState extends State<ResultPage> {
             elevation: 10,
             shadowColor: AppColors.redColor,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child: Center(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       'Failed!',
@@ -147,45 +174,45 @@ class _ResultPageState extends State<ResultPage> {
                     getResultScore(title: 'Your Score is'),
                     SizedBox(height: 12),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        InkWell(
-                          onTap: () {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => HomeScreen(),
-                              ),
-                              (route) => false,
-                            );
-                          },
-                          child: Expanded(
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HomeScreen(),
+                                ),
+                                (route) => false,
+                              );
+                            },
                             child: getBasicDesign(
                               icon: Icons.home,
-                              title: 'Home       ',
+                              title: 'Home',
                             ),
                           ),
                         ),
                         Expanded(
                           child: InkWell(
                             onTap: () {
-                              for (var q in widget.questions){
+                              for (var q in widget.questions) {
                                 q.reset();
-                              } ////////////
+                              }
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => PracticeQuestions(
-                                    title: widget.title,
-                                    examList: widget.questions,
-                                    showTimer: widget.showTimer,
-                                  ),
+                                  // builder: (context) => PracticeQuestions(
+                                  //   title: widget.title,
+                                  //   examList: widget.questions,
+                                  //   showTimer: widget.showTimer,
+                                  // ),
+                                  builder: (context) => ExamHistory(),
                                 ),
                               );
                             },
                             child: getBasicDesign(
                               icon: Icons.refresh,
-                              title: 'Try Again',
+                              title: 'Check History',
                             ),
                           ),
                         ),
@@ -200,7 +227,7 @@ class _ResultPageState extends State<ResultPage> {
 
         Padding(
           padding: const EdgeInsets.only(bottom: 10),
-          child: Lottie.asset(AppAnimation.failAnimation),
+          child: Lottie.asset(AppAnimation.failAnimation, height: 320),
         ),
       ],
     );
@@ -217,19 +244,17 @@ class _ResultPageState extends State<ResultPage> {
           children: [
             Icon(
               icon,
-              color: widget.result
-                  ? AppColors.greenColors
-                  : AppColors.redColor,
-              size: 35,
+              color: widget.result ? AppColors.greenColors : AppColors.redColor,
+              size: 25,
             ),
-            SizedBox(width: 10),
+            SizedBox(width: 5),
             Text(
               title,
               style: TextStyle(
                 color: widget.result
                     ? AppColors.greenColors
                     : AppColors.redColor,
-                fontSize: 16,
+                fontSize: 12,
                 fontWeight: FontWeight.bold,
               ),
             ),

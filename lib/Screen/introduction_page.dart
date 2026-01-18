@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:rto_apps/Screen/practice_question_section_page.dart';
 import 'package:rto_apps/Screen/practice_questions.dart';
-import 'package:rto_apps/Screen/question_model.dart';
+import 'package:rto_apps/Screen/Rto_Modals/question_model.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 
 class IntroductionPage extends StatefulWidget {
@@ -17,24 +17,23 @@ class IntroductionPage extends StatefulWidget {
   @override
   State<IntroductionPage> createState() => _IntroductionPageState();
 }
-
 class _IntroductionPageState extends State<IntroductionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.homePageBackground,
-      appBar: AppBar(
+      appBar: AppBar(centerTitle: true,
         iconTheme: IconThemeData(color: AppColors.whiteColors),
         backgroundColor: AppColors.appBarColors,
-        title: Text(textAlign: TextAlign.center,
-          'Exam',
+        title: Text(
+          'EXAM',
           style: TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
+            
+            fontWeight: FontWeight.w600,
             color: AppColors.whiteColors,
           ),
         ),
-        actions: [],
+        
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),

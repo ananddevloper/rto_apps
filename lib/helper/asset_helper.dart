@@ -13,7 +13,7 @@ class AppIcon {
 }
 
 class AppImage {
-  static const _baseImage = 'assets/images/';
+  static const _baseImage = 'assets/images';
   static const String welcomeImage = '$_baseImage/welcome.png';
   static const String logo = '$_baseImage/logo.png';
   static const String roadSignImage = '$_baseImage/Road.png';

@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:rto_apps/Screen/Rto_Modals/test_history_modal.dart';
 import 'package:rto_apps/Screen/practice_question_result_page.dart';
-import 'package:rto_apps/Screen/question_model.dart';
+import 'package:rto_apps/Screen/Rto_Modals/question_model.dart';
 import 'package:rto_apps/Screen/result_page.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 import 'package:rto_apps/helper/asset_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PracticeQuestions extends StatefulWidget {
   const PracticeQuestions({
@@ -26,8 +28,8 @@ class PracticeQuestions extends StatefulWidget {
 class _PracticeQuestionsState extends State<PracticeQuestions> {
   final PageController _pageController = PageController();
   int currentIndex = 0;
-  int rightCount = 0;
-  int wrongCount = 0;
+  // int rightCount = 0;
+  // int wrongCount = 0;
   Timer? _timer;
   int secondsLeft = 10 * 60;
   @override
@@ -36,6 +38,18 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
     if (widget.showTimer) {
       startTestTimer();
     }
+  }
+
+  int get rightCount {
+    return widget.examList
+        .where((question) => question.isCorrect(question.selectedAnswer ?? ''))
+        .length;
+  }
+
+  int get wrongCount {
+    return widget.examList
+        .where((question) => question.isWrong(question.selectedAnswer))
+        .length;
   }
 
   @override
@@ -47,16 +61,18 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
         }
         return true;
       },
+
       child: Scaffold(
         backgroundColor: AppColors.welcomeBackgroundColor,
         appBar: AppBar(
+          centerTitle: true,
           iconTheme: IconThemeData(color: AppColors.whiteColors),
           backgroundColor: AppColors.appBarColors,
           title: Text(
-            widget.showTimer ? 'Exam' : widget.title,
+            widget.showTimer ? 'EXAM' : widget.title,
             style: TextStyle(
               color: AppColors.whiteColors,
-              fontSize: 20,
+
               fontWeight: widget.showTimer ? FontWeight.bold : FontWeight.w600,
             ),
           ),
@@ -173,7 +189,6 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                         // getTimerView(),
                       ],
                     ),
-
                     Expanded(
                       child: PageView.builder(
                         itemCount: widget.examList.length,
@@ -251,26 +266,21 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
                                       onTap: () {
+                                        if (questionModel.isAnswered) return;
+                                        // Answer select karo
+                                        questionModel.selectAnswer(
+                                          questionModel.options[index],
+                                        );
                                         setState(() {
-                                          if (questionModel.isAnswered) return;
-                                          // Answer select karo
-                                          questionModel.selectAnswer(
-                                            questionModel.options[index],
-                                          );
-                                          //Count logic
-                                          if (questionModel.isCorrect(
-                                            questionModel.options[index],
-                                          )) {
-                                            rightCount++;
-                                          } else {
-                                            wrongCount++;
-                                          }
+
                                         });
                                       },
+                                      
                                       child: Card(
                                         elevation: 2,
                                         color: questionModel.getOptionColor(
                                           questionModel.options[index],
+                                          widget.showTimer,
                                         ),
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(
@@ -282,13 +292,13 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                                             vertical: 12.0,
                                             horizontal: 15,
                                           ),
+
                                           child: Row(
                                             children: [
                                               Text(
                                                 '${optionLabel(index)}.',
                                                 style: TextStyle(
                                                   fontSize: 17,
-
                                                   color: AppColors.blackColor,
                                                 ),
                                               ),
@@ -354,15 +364,30 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {
+                          onTap: () async {
                             if (currentIndex < widget.examList.length - 1) {
                               _pageController.nextPage(
                                 duration: const Duration(milliseconds: 300),
                                 curve: Curves.easeInOut,
                               );
                             } else {
+                              if (widget.title == 'Exam History') {
+                                Navigator.pop(context);
+                                return;
+                              }
+
                               if (widget.showTimer) {
-                                bool isPass = rightCount >= 12;
+                                bool isPass =
+                                    rightCount >=
+                                    11; // TODO:need to change to 12
+
+                                TestHistoryModal history = TestHistoryModal(
+                                  questionList: widget.examList,
+                                  dateTime: DateTime.now(),
+                                  isPass: isPass,
+                                );
+                                await saveTestHistory(history);
+
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
@@ -579,5 +604,25 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
           ),
         ) ??
         false;
+  }
+
+  Future<void> saveTestHistory(TestHistoryModal history) async {
+    // Ye Function ek TestHistoryModal object ko save karta hai
+    SharedPreferences pref =
+        await SharedPreferences.getInstance(); // Phone ke local storage ko access kar rahe ho await isliye async operation hai
+
+    // Existing list get karo
+    List<String> historyList =
+        pref.getStringList('test_history') ??
+        []; //SharePrefrence me key 'test_history ke under jo list hain usko lo
+
+    // Object JSON String
+    String historyJson = jsonEncode(history.toJson());
+
+    //List me add karo
+    historyList.add(historyJson);
+
+    //Save again
+    await pref.setStringList('test_history', historyList);
   }
 }

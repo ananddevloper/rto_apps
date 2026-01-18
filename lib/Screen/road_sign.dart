@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rto_apps/Screen/question_model.dart';
+import 'package:rto_apps/Screen/Rto_Modals/question_model.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 
 class RoadSignScreen extends StatefulWidget {
@@ -15,13 +15,13 @@ class _RoadSignScreenState extends State<RoadSignScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.homePageBackground,
-      appBar: AppBar(
+      appBar: AppBar(centerTitle: true,
         backgroundColor: AppColors.appBarColors,
         iconTheme: IconThemeData(color: Colors.white),
-        title: Text(textAlign: TextAlign.center,
+        title: Text(
           'Road Signs',
           style: TextStyle(
-            fontSize: 25,
+            
             fontWeight: FontWeight.w600,
             color: AppColors.whiteColors,
           ),
@@ -32,8 +32,7 @@ class _RoadSignScreenState extends State<RoadSignScreen> {
         child: Scrollbar(
           thickness: 10,
           radius: Radius.circular(30),
-          child: ListView.separated(
-           
+          child: ListView.separated(           
             itemBuilder: (context, index) {
               final roadSigns = roadSignList[index]; ////
               return Card(
@@ -43,15 +42,16 @@ class _RoadSignScreenState extends State<RoadSignScreen> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(18.0),
+                  padding: const EdgeInsets.fromLTRB(20, 8, 0, 0),
                   child: 
-                  Column(crossAxisAlignment: CrossAxisAlignment.start,
+                  Stack(
+                    
                     children: [
-                      Text('${index+1}.', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600)),
+                      Text('${index+1}.', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600,)),
                       Row(
                         children: [                         
-                          Image.network(roadSigns.image ?? '', height: 130, width: 100 ,), 
-                          SizedBox(width: 3,),
+                          Image.network(roadSigns.image ?? '', height: 140, width: 100 ,), 
+                          SizedBox(width: 10,),
                           Expanded(child: Text('${roadSigns.correctAnswer}',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: AppColors.blackColor,),))
                         ],
                       ),
@@ -70,6 +70,7 @@ class _RoadSignScreenState extends State<RoadSignScreen> {
       ),
     );
   }
+  
   @override
   void initState() {
     // TODO: implement initState
@@ -77,3 +78,5 @@ class _RoadSignScreenState extends State<RoadSignScreen> {
     super.initState();
   }
 }
+
+
