@@ -72,7 +72,6 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
             widget.showTimer ? 'EXAM' : widget.title,
             style: TextStyle(
               color: AppColors.whiteColors,
-
               fontWeight: widget.showTimer ? FontWeight.bold : FontWeight.w600,
             ),
           ),
@@ -266,16 +265,21 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
                                       onTap: () {
-                                        if (questionModel.isAnswered) return;
+                                        //  if (questionModel.isAnswered) return;
+                                        /// only 1 optin select hoaga
                                         // Answer select karo
+
+                                        if (!widget.showTimer &&
+                                            questionModel.isAnswered)
+                                          return;
+
                                         questionModel.selectAnswer(
                                           questionModel.options[index],
                                         );
-                                        setState(() {
 
-                                        });
+                                        setState(() {});
                                       },
-                                      
+
                                       child: Card(
                                         elevation: 2,
                                         color: questionModel.getOptionColor(
