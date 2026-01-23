@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:rto_apps/Screen/Rto_Modals/test_history_modal.dart';
+import 'package:rto_apps/Rto_Modals/test_history_modal.dart';
 import 'package:rto_apps/Screen/practice_questions.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';

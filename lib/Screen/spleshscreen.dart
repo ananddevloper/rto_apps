@@ -19,19 +19,25 @@ class _SpleshscreenState extends State<Spleshscreen> {
   @override
   void initState() {
     super.initState();
-  Future.delayed(const Duration(seconds: 3), () {
-    setState(() {
-      opacity = 0.0;
+    Future.delayed(const Duration(seconds: 3), () {
+      setState(() {
+        opacity = 0.0;
+      });
     });
-  });
-  Future.delayed(const Duration(seconds: 3),(){
-    Navigator.pushReplacement(context, PageRouteBuilder(
-      transitionDuration: const Duration(milliseconds: 600),
-      pageBuilder:(context, animation, secondaryAnimation) => HomeScreen(), transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      return FadeTransition(opacity: animation, child: child);
-    }));
-  });
+    Future.delayed(const Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          transitionDuration: const Duration(milliseconds: 600),
+          pageBuilder: (context, animation, secondaryAnimation) => HomeScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+        ),
+      );
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

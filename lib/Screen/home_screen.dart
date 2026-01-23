@@ -7,12 +7,12 @@ import 'package:rto_apps/Screen/exam_history.dart';
 import 'package:rto_apps/Screen/introduction_page.dart';
 import 'package:rto_apps/Screen/practice_question_section_page.dart';
 import 'package:rto_apps/Screen/practice_questions.dart';
-import 'package:rto_apps/Screen/Rto_Modals/question_model.dart';
+import 'package:rto_apps/Rto_Modals/question_model.dart';
 import 'package:rto_apps/Screen/question_bank.dart';
 import 'package:rto_apps/Screen/road_sign.dart';
-
 import 'package:rto_apps/helper/app_colors.dart';
 import 'package:rto_apps/helper/asset_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,8 +21,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // Map<String, dynamic>? allStateRtoData;
+  bool isLoading = true;
+  String? selectedState;
   List<QuestionModel> homeScreenLoadingList = []; /////////////////////
-
   List<Map<String, dynamic>> get homeScreenList => [
     {
       'cardColor': AppColors.redColor,
@@ -136,17 +138,25 @@ class _HomeScreenState extends State<HomeScreen> {
           style: TextStyle(
             color: AppColors.whiteColors,
             fontWeight: FontWeight.w600,
-          ),  
+          ),
         ),
+
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: InkWell(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder:(context) => Settings(),));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          Settings(),
+                    ),
+                  );
               },
-              child: Icon(Icons.settings)),
-          )
+              child: Icon(Icons.settings),
+            ),
+          ),
         ],
       ),
       body: Padding(
@@ -222,8 +232,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    super.initState();
     loadingHomeData();
+    // loadingRtoOffices();
+    super.initState();
   }
 
   Future<void> loadingHomeData() async {
@@ -233,4 +244,16 @@ class _HomeScreenState extends State<HomeScreen> {
     homeScreenLoadingList = allQuestions;
     setState(() {});
   }
+
+  Future<String?> getSavedState() async {
+    final pref = await SharedPreferences.getInstance();
+    return pref.getString('selected_state');
+  }
+
+  Future<void> loadSelectedState() async {
+    selectedState = await getSavedState();
+    setState(() {});
+  }
+
+  
 }

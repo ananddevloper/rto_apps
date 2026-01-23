@@ -39,6 +39,13 @@ dependencies:
   flutter_svg: ^2.2.2
   lottie: ^3.3.2
   shared_preferences: ^2.5.4
+  url_launcher: ^6.3.2
+  flutter_expanded_tile: ^0.4.0
+  flutter_html: ^3.0.0
+  webview_flutter: ^4.13.0
+  share_plus: ^12.0.0
+  package_info_plus: ^9.0.0
+  
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +75,7 @@ flutter:
     - assets/icons/
     - assets/animation/
     - assets/files/
+    - assets/html/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

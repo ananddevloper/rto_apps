@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:rto_apps/Screen/practice_question_section_page.dart';
 import 'package:rto_apps/Screen/practice_questions.dart';
-import 'package:rto_apps/Screen/Rto_Modals/question_model.dart';
+import 'package:rto_apps/Rto_Modals/question_model.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 
 class IntroductionPage extends StatefulWidget {

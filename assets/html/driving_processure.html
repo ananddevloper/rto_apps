@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Process of Driving Licence</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #f4f6f8;
+  }
+
+  header {
+    background-color: #243b6b;
+    color: #fff;
+    padding: 14px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .container {
+    padding: 10px;
+  }
+
+  .accordion {
+    background: #ffffff;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    overflow: hidden;
+  }
+
+  .accordion-header {
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .accordion-header span {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+  }
+
+  .accordion-content {
+    display: none;
+    padding: 14px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #333;
+    border-top: 1px solid #eee;
+    white-space: pre-line;
+  }
+
+  .accordion-content strong {
+    display: block;
+    margin-top: 12px;
+    font-size: 15px;
+    color: #243b6b;
+  }
+
+  .accordion.active .accordion-content {
+    display: block;
+  }
+
+  .accordion.active .accordion-header span {
+    transform: rotate(180deg);
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- Learner License -->
+<div class="accordion">
+  <div class="accordion-header">
+    Issuance of Learner’s Permit
+    <span>⌄</span>
+  </div>
+  <div class="accordion-content">
+<strong>Necessity for Learner’s License</strong>
+A Learner’s License is issued to learn driving of Motor Vehicles. It is essential for obtaining a Driving License.
+
+<strong>Procedure</strong>
+• Visit District Transport Office (RTO)
+• Submit required documents and prescribed fees
+• Biometrics will be captured (Photo, Thumb impression, Signature)
+• Appear for Learner’s License Test (theoretical)
+• Test based on road signs, traffic rules & regulations
+• Learner’s License issued after passing test
+• If failed, re-test allowed after one week
+
+<strong>Age Eligibility</strong>
+• 16 years – Two wheeler without gear
+• 18 years – Two wheeler with gear, Motor Car, Non-transport vehicles
+• 20 years – Transport vehicles (8th standard pass + 1 year LMV experience)
+
+<strong>Other Requirements</strong>
+• Knowledge of traffic rules, signals and signs
+
+<strong>Where to Apply</strong>
+• Concerned District Transport Office (RTO)
+
+<strong>Validity</strong>
+• Learner’s License valid for 6 months
+  </div>
+</div>
+
+<!-- Driving License -->
+<div class="accordion">
+  <div class="accordion-header">
+    Issuance of Driver’s License
+    <span>⌄</span>
+  </div>
+  <div class="accordion-content">
+<strong>Procedure</strong>
+• Visit District Transport Office with documents
+• Fees submission and verification
+• Challan issued with date, time & venue of driving test
+• Bring own vehicle on test date
+• Test includes driving skills, traffic rules, vehicle systems & safety
+• Driver’s License issued after passing test
+
+<strong>Eligibility</strong>
+• Valid Learner’s License required
+• Apply after 30 days and within 180 days of LL issue
+• Applicant must be conversant with driving and traffic rules
+• License issued within 15 working days
+• Maximum disposal time: 30 working days
+
+<strong>Documents Required</strong>
+• Form No. 4 – Application Form
+• Form No. 1A – Medical Certificate (Commercial)
+• Valid Learner’s License
+• Two passport size photographs
+• Form No. 5 – Driving School Certificate (Commercial)
+
+<strong>Fee</strong>
+• One class of vehicle – Rs. 340/-
+• Two classes of vehicle – Rs. 440/-
+
+<strong>Validity</strong>
+• Private Vehicles – 20 years or till age of 50
+• Commercial Vehicles – 3 years
+  </div>
+</div>
+
+<!-- Renewal -->
+<div class="accordion">
+  <div class="accordion-header">
+    Renewal of Driving License
+    <span>⌄</span>
+  </div>
+  <div class="accordion-content">
+<strong>Where to Apply</strong>
+• District Transport Office (RTO)
+• Apply between 10:00 AM to 2:00 PM
+• Can renew at any RTO
+• Address change must be updated
+
+<strong>Documents Required</strong>
+
+<strong>Non-Transport</strong>
+• Form 9 – Renewal Application
+• Form 1 – Physical Fitness Declaration
+• Existing Driving License
+• Three passport size photographs (Book form)
+
+<strong>Transport</strong>
+• Form 9 – Renewal Application
+• Form 1A – Medical Certificate
+• Driving License
+• Three passport size photographs
+• Driver Refresher Training Certificate (HMV)
+  </div>
+</div>
+
+<!-- Vehicle Registration -->
+<div class="accordion">
+  <div class="accordion-header">
+    Registration of Motor Vehicle
+    <span>⌄</span>
+  </div>
+  <div class="accordion-content">
+<strong>Documents Required</strong>
+• Form 20 – Registration Application
+• Form 21 – Sale Certificate
+• Insurance Certificate
+• Passport size photographs
+• Dealer Invoice / Money Receipt
+• Temporary Registration (if applicable)
+• Customs Clearance Certificate (Imported vehicles)
+• Bank / Finance documents (HP / Lease)
+• Entry tax receipt (Other state vehicles)
+• PAN Card copy (Vehicle cost above 4 lakhs)
+• Design approval (Trailer / Semi-trailer)
+
+<strong>Procedure</strong>
+• Vehicle produced at RTO for inspection
+• Physical inspection by Inspecting Authority
+• Registration number and receipt issued
+• Receipt acts as proof till RC delivery
+
+<strong>Assignment of Registration Mark</strong>
+• Unique Registration Mark allotted by Registering Authority as per State & Central Government norms
+  </div>
+</div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.accordion-header').forEach(header => {
+    header.addEventListener('click', () => {
+      header.parentElement.classList.toggle('active');
+    });
+  });
+</script>
+
+</body>
+</html>

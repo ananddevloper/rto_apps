@@ -1,169 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:rto_apps/Screen/Settings/contact_us.dart';
+import 'package:rto_apps/Screen/Settings/process_driving_licence.dart';
+import 'package:rto_apps/Screen/Settings/rto_offices.dart';
+import 'package:rto_apps/Screen/Settings/stateSelaction.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 import 'package:rto_apps/helper/asset_helper.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
-
-  
   State<Settings> createState() => _SettingsState();
 }
 
 class _SettingsState extends State<Settings> {
+  String appVersion ='';
   TextEditingController searchController = TextEditingController();
-
-  List<String> get filteredStates {
-    if (searchController.text.isEmpty) {
-      return getStateList;
-    }
-    return getStateList
-        .where(
-          (state) =>
-              state.toLowerCase().contains(searchController.text.toLowerCase()),
-        )
-        .toList();
-  }
-
-  List<String> get getStateList => [
-    'Andhra Pradesh',
-    'Arunachal Pradesh',
-    'Andaman and Nicobar Islands',
-    'Assam',
-    'Bihar',
-    'Chhattisgarh',
-    'Chandigarh',
-    'Dadra and Nagar Haveli and Daman and Diu',
-    'Delhi',
-    'Goa',
-    'Gujarat',
-    'Haryana',
-    'Himachal Pradesh',
-    'Jharkhand',
-    'Jammu and Kashmir',
-    'Karnataka',
-    'Kerala',
-    'Ladakh',
-    'Lakshadweep',
-    'Madhya Pradesh',
-    'Maharashtra',
-    'Manipur',
-    'Meghalaya',
-    'Mizoram',
-    'Nagaland',
-    'Odisha',
-    'Punjab',
-    'Puducherry',
-    'Rajasthan',
-    'Sikkim',
-    'Tamil Nadu',
-    'Telangana',
-    'Tripura',
-    'Uttar Pradesh',
-    'Uttarakhand',
-    'West Bengal',
-  ];
-
   List<Map<String, dynamic>> get getSettingsList => [
-    {
-      'title': 'Change State',
-      'icons': Icons.location_on,
-      'onTap': () {
-        showModalBottomSheet(
-          backgroundColor: AppColors.homePageBackground,
-          context: context,
-          isScrollControlled: true,
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height * 0.85,
-          ),
-          builder: (context) {
-            return Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                children: [
-                  getSelectState(),
-                  Divider(),
-                  TextField(
-                    controller: searchController,
-                    onChanged: (_) {
-                      setState(() {
+  
+    {'title': 'Form', 'icons': Icons.description, 'onTap': () {
 
-                      });
-                    },
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      prefixIcon: Icon(Icons.search, size: 30),
-                      hintText: 'Search',
-                      hintStyle: TextStyle(color: Colors.black54, fontSize: 20),
-                    ),
-                  ),
-                  Divider(),
-                  Expanded(child: getChangeState()),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    },
-    {'title': 'Change Language', 'icons': Icons.translate, 'onTap': () {}},
-    {'title': 'Dark Mode', 'icons': Icons.dark_mode, 'onTap': () {}},
-    {'title': 'Form', 'icons': Icons.description, 'onTap': () {}},
+      launchUrl(Uri.parse('https://sarathi.parivahan.gov.in/sarathiservice/stateSelectBean.do'));
+    }},
+    
     {
       'title': 'Proceess of Driving Licence',
       'icons': Icons.swap_horiz,
-      'onTap': () {},
+      'onTap': () {Navigator.push(context, MaterialPageRoute(builder:(context) => ProcessDrivingLicence(),));},
     },
-    {'title': 'RTO Office', 'icons': Icons.business, 'onTap': () {}},
-    {'title': 'Contact Us', 'icons': Icons.email, 'onTap': () {}},
-    {'title': 'Add Driving School', 'icons': Icons.navigation, 'onTap': () {}},
-    {'title': 'Share App', 'icons': Icons.share, 'onTap': () {}},
+    {'title': 'RTO Office', 'icons': Icons.business, 'onTap': () {
+      Navigator.push(context, MaterialPageRoute(builder:(context) => RtoOffices(),));
+    }},
+    {'title': 'Contact Us', 'icons': Icons.email, 'onTap': () {
+      Navigator.push(context, MaterialPageRoute(builder:(context) => ContactUs(),));
+    }},
+   // {'title': 'Add Driving School', 'icons': Icons.navigation, 'onTap': () {}},
+
+    {'title': 'Share App', 'icons': Icons.share, 'onTap': () {
+      Share.share('https://play.google.com/store/apps/details?id=com.yourapp.packagename');
+    }},
     {'title': 'Rate App', 'icons': Icons.star, 'onTap': () {}},
-    {'title': 'Disclaimer', 'icons': Icons.info, 'onTap': () {}},
+    {'title': 'Disclaimer', 'icons': Icons.info, 'onTap': () {
+      showDisclaimerDialog();
+    }},
     {'title': 'Privacy Policy', 'icons': Icons.lock, 'onTap': () {}},
     {'title': 'Terms & Conditions', 'icons': Icons.description, 'onTap': () {}},
   ];
 
-  ListView getChangeState() {
-    return ListView.separated(
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.fromLTRB(10, 20, 0, 20),
-          child: Text(
-            filteredStates[index],
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Colors.black54,
-            ),
-          ),
-        );
-      },
-      separatorBuilder: (context, index) => Divider(),
-      itemCount: filteredStates.length,
-    );
-  }
+@override
+void initState() {
+  super.initState();
+ // showDisclaimerDialog();
+  loadAppVersion();
 
-  Padding getSelectState() {
-    return Padding(
-      padding: const EdgeInsets.all(18.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            textAlign: TextAlign.start,
-            'Select State',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-          ),
+}
 
-          Icon(Icons.close),
-        ],
-      ),
-    );
-  }
-
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -224,12 +117,15 @@ class _SettingsState extends State<Settings> {
 
             SizedBox(height: 20),
             Center(
-              child: Text(
-                'Version 3.50(112)',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black87,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+                child: Text(
+                  appVersion.isEmpty?'':appVersion,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
                 ),
               ),
             ),
@@ -244,10 +140,10 @@ class _SettingsState extends State<Settings> {
     required IconData icons,
     required Function()? onTap,
   }) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: InkWell(
-        onTap: onTap,
+    return InkWell(
+       onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
         child: Row(
           children: [
             Icon(icons, size: 26, color: AppColors.appBarColors),
@@ -272,4 +168,28 @@ class _SettingsState extends State<Settings> {
       ),
     );
   }
+  void showDisclaimerDialog(){
+    showDialog(context: context, builder:(context) {
+      return AlertDialog(
+        backgroundColor: AppColors.whiteColors,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14),
+        ),
+        title: Text('Disclaimer',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600,color: AppColors.appBarColors),),
+        content: Text('This test is only for public awareness. Though all efforts have been made to ensure the accuracy of the content, the same should not be construed as a statement of law or used for any legal purpose. This application accepts no responsibility in relation to the accuracy, completeness, usefulness or otherwise, of the contents. Users are advised to verify check any information with the Trnasport Department.',style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: AppColors.blackColor),),
+        actions: [TextButton(onPressed: ()=> Navigator.pop(context), child: Text('OK',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: AppColors.appBarColors),))],
+      );
+    },);
+  }
+
+
+Future<void>loadAppVersion()async{
+  final info = await PackageInfo.fromPlatform();
+  setState(() {
+    appVersion = 'Version ${info.version} (${info.buildNumber})';
+  });
+}
+
+
+
 }

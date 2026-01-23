@@ -29,4 +29,11 @@ class AppAnimation {
 class AppFile {
   static const _baseFile = 'assets/files';
   static const String dataJson = '$_baseFile/data.json';
+  static const String rtoOffice = '$_baseFile/rto_office.json';
+  
+}
+
+class AppHtml{
+  static const _baseHtml = 'assets/html';
+  static const String drivingProcessure = '$_baseHtml/driving_processure.html';
 }

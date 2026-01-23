@@ -1,6 +1,6 @@
 import 'dart:isolate';
 
-import 'package:rto_apps/Screen/Rto_Modals/question_model.dart';
+import 'package:rto_apps/Rto_Modals/question_model.dart';
 
 class TestHistoryModal {
   List<QuestionModel>? questionList;

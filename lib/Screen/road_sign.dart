@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rto_apps/Screen/Rto_Modals/question_model.dart';
+import 'package:rto_apps/Rto_Modals/question_model.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 
 class RoadSignScreen extends StatefulWidget {

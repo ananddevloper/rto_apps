@@ -3,7 +3,7 @@ import 'package:lottie/lottie.dart';
 import 'package:rto_apps/Screen/exam_history.dart';
 import 'package:rto_apps/Screen/home_screen.dart';
 import 'package:rto_apps/Screen/practice_questions.dart';
-import 'package:rto_apps/Screen/Rto_Modals/question_model.dart';
+import 'package:rto_apps/Rto_Modals/question_model.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 import 'package:rto_apps/helper/asset_helper.dart';
 
