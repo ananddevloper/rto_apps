@@ -574,7 +574,7 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
               ),
             ),
             content: Text(
-              'If you want to exit from the exam, you will lost your progress.',
+            'If you want to exit from the exam, you will lose your progress.',
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,

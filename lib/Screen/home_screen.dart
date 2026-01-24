@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
     {
       'cardColor': AppColors.appBarColors,
       'icon': SvgPicture.asset(AppIcon.practiceQuestion),
-      'title': 'Practical Questions',
+      'title': 'Practice Questions',
       'titleColor': AppColors.appBarColors,
       'arrowIcon': SvgPicture.asset(
         AppIcon.arrow,

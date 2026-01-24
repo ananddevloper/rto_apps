@@ -14,7 +14,6 @@ class _ProcessDrivingLicenceState extends State<ProcessDrivingLicence> {
    WebViewController? controller;
   String htmlData = '';
   bool _isLoading = true;
-
   @override
   void initState() {
     super.initState();
@@ -40,7 +39,6 @@ class _ProcessDrivingLicenceState extends State<ProcessDrivingLicence> {
           ),
         ),
       ),
-
       body: _isLoading? Center(child: CircularProgressIndicator(),) :WebViewWidget(controller: controller!),
     );
   }
@@ -52,7 +50,6 @@ class _ProcessDrivingLicenceState extends State<ProcessDrivingLicence> {
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted);
     final String html = await rootBundle.loadString(AppHtml.drivingProcessure);
-
     controller?.loadHtmlString(html);
     setState(() {
       _isLoading = false;

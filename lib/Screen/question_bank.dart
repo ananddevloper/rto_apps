@@ -19,14 +19,15 @@ class _QuestionBankState extends State<QuestionBank> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.homePageBackground,
-      appBar: AppBar(centerTitle: true,
+      appBar: AppBar(
+        centerTitle: true,
         iconTheme: IconThemeData(color: AppColors.whiteColors),
         backgroundColor: AppColors.appBarColors,
         title: Text(
           'Question Bank',
           style: TextStyle(
             color: AppColors.whiteColors,
-            
+
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -34,12 +35,12 @@ class _QuestionBankState extends State<QuestionBank> {
       body: questionBankList.isEmpty
           ? Center(child: CircularProgressIndicator())
           : Scrollbar(
-         //   controller: scrollController,
-            //  thumbVisibility: true,
+              //   controller: scrollController,
+              //  thumbVisibility: true,
               thickness: 10,
               radius: Radius.circular(30),
               child: ListView.separated(
-              //  controller: scrollController,
+                //  controller: scrollController,
                 itemBuilder: (context, index) {
                   final questionSets = questionBankList[index]; ////
                   return Padding(
