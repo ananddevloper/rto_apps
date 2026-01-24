@@ -17,23 +17,23 @@ class IntroductionPage extends StatefulWidget {
   @override
   State<IntroductionPage> createState() => _IntroductionPageState();
 }
+
 class _IntroductionPageState extends State<IntroductionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.homePageBackground,
-      appBar: AppBar(centerTitle: true,
+      appBar: AppBar(
+        centerTitle: true,
         iconTheme: IconThemeData(color: AppColors.whiteColors),
         backgroundColor: AppColors.appBarColors,
         title: Text(
           'EXAM',
           style: TextStyle(
-            
             fontWeight: FontWeight.w600,
             color: AppColors.whiteColors,
           ),
         ),
-        
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),

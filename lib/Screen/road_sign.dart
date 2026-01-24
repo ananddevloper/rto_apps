@@ -15,13 +15,13 @@ class _RoadSignScreenState extends State<RoadSignScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.homePageBackground,
-      appBar: AppBar(centerTitle: true,
+      appBar: AppBar(
+        centerTitle: true,
         backgroundColor: AppColors.appBarColors,
         iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           'Road Signs',
           style: TextStyle(
-            
             fontWeight: FontWeight.w600,
             color: AppColors.whiteColors,
           ),
@@ -32,7 +32,7 @@ class _RoadSignScreenState extends State<RoadSignScreen> {
         child: Scrollbar(
           thickness: 10,
           radius: Radius.circular(30),
-          child: ListView.separated(           
+          child: ListView.separated(
             itemBuilder: (context, index) {
               final roadSigns = roadSignList[index]; ////
               return Card(
@@ -43,21 +43,37 @@ class _RoadSignScreenState extends State<RoadSignScreen> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20, 8, 0, 0),
-                  child: 
-                  Stack(
-                    
+                  child: Stack(
                     children: [
-                      Text('${index+1}.', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600,)),
+                      Text(
+                        '${index + 1}.',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                       Row(
-                        children: [                         
-                          Image.network(roadSigns.image ?? '', height: 140, width: 100 ,), 
-                          SizedBox(width: 10,),
-                          Expanded(child: Text('${roadSigns.correctAnswer}',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: AppColors.blackColor,),))
+                        children: [
+                          Image.network(
+                            roadSigns.image ?? '',
+                            height: 140,
+                            width: 100,
+                          ),
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              '${roadSigns.correctAnswer}',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.blackColor,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ],
                   ),
-                  
                 ),
               );
             },
@@ -70,7 +86,7 @@ class _RoadSignScreenState extends State<RoadSignScreen> {
       ),
     );
   }
-  
+
   @override
   void initState() {
     // TODO: implement initState
@@ -78,5 +94,3 @@ class _RoadSignScreenState extends State<RoadSignScreen> {
     super.initState();
   }
 }
-
-

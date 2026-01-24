@@ -33,9 +33,7 @@ class _CommonWebViewState extends State<CommonWebView> {
           },
         ),
       )
-      ..loadRequest(
-        Uri.parse(widget.url),
-      );
+      ..loadRequest(Uri.parse(widget.url));
   }
 
   @override
@@ -57,15 +55,12 @@ class _CommonWebViewState extends State<CommonWebView> {
       body: Stack(
         children: [
           WebViewWidget(controller: controller),
-          if(isLoading)
-          Center(
-            child: CircularProgressIndicator(
-              color: AppColors.appBarColors,
+          if (isLoading)
+            Center(
+              child: CircularProgressIndicator(color: AppColors.appBarColors),
             ),
-          )
         ],
       ),
-     
     );
   }
 }

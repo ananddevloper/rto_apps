@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:rto_apps/Screen/Settings/settin_page.dart';
+import 'package:rto_apps/Settings/settin_page.dart';
 import 'package:rto_apps/Screen/exam_history.dart';
 import 'package:rto_apps/Screen/introduction_page.dart';
 import 'package:rto_apps/Screen/practice_question_section_page.dart';
@@ -146,13 +146,10 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.only(right: 10),
             child: InkWell(
               onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          Settings(),
-                    ),
-                  );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Settings()),
+                );
               },
               child: Icon(Icons.settings),
             ),
@@ -254,6 +251,4 @@ class _HomeScreenState extends State<HomeScreen> {
     selectedState = await getSavedState();
     setState(() {});
   }
-
-  
 }

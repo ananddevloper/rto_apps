@@ -67,7 +67,13 @@ class _StateselactionState extends State<Stateselaction> {
       appBar: AppBar(
         backgroundColor: AppColors.appBarColors,
         iconTheme: IconThemeData(color: AppColors.whiteColors),
-        title: Text('Select Your State',style: TextStyle(color: AppColors.whiteColors,fontWeight: FontWeight.w600),),
+        title: Text(
+          'Select Your State',
+          style: TextStyle(
+            color: AppColors.whiteColors,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
       ),
       body: Column(
         children: [

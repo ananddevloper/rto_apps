@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:rto_apps/Screen/Settings/contact_us.dart';
-import 'package:rto_apps/Screen/Settings/privacy_policy.dart';
-import 'package:rto_apps/Screen/Settings/process_driving_licence.dart';
-import 'package:rto_apps/Screen/Settings/rto_offices.dart';
-import 'package:rto_apps/Screen/Settings/stateSelaction.dart';
+import 'package:rto_apps/Settings/contact_us.dart';
+import 'package:rto_apps/Settings/privacy_policy.dart';
+import 'package:rto_apps/Settings/process_driving_licence.dart';
+import 'package:rto_apps/Settings/rto_offices.dart';
+import 'package:rto_apps/Settings/stateSelaction.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 import 'package:rto_apps/helper/asset_helper.dart';
 import 'package:share_plus/share_plus.dart';
@@ -24,11 +24,7 @@ class _SettingsState extends State<Settings> {
       'title': 'Form',
       'icons': Icons.description,
       'onTap': () {
-        launchUrl(
-          Uri.parse(
-            'https://parivahan.gov.in',
-          ),
-        );
+        launchUrl(Uri.parse('https://parivahan.gov.in'));
       },
     },
 
@@ -74,13 +70,11 @@ class _SettingsState extends State<Settings> {
       'icons': Icons.share,
       'onTap': () {
         Share.share(
-          'https://play.google.com/store/apps/details?id=com.yourapp.packagename',
+          'https://play.google.com/store/apps/details?id=com.avtechy.rto_apps',
         );
       },
     },
-    {'title': 'Rate App', 'icons': Icons.star, 'onTap': () {
-
-    }},
+    {'title': 'Rate App', 'icons': Icons.star, 'onTap': () {}},
     {
       'title': 'Disclaimer',
       'icons': Icons.info,
@@ -125,7 +119,6 @@ class _SettingsState extends State<Settings> {
     super.initState();
     // showDisclaimerDialog();
     loadAppVersion();
-   
   }
 
   @override
@@ -257,7 +250,7 @@ class _SettingsState extends State<Settings> {
             ),
           ),
           content: Text(
-                 'This test is only for public awareness. Though all efforts have been made to ensure the accuracy of the content, the same should not be construed as a statement of law or used for any legal purpose. This application accepts no responsibility in relation to the accuracy, completeness, usefulness or otherwise, of the contents. Users are advised to verify check any information with the Transport Department.' ,
+            'This test is only for public awareness. Though all efforts have been made to ensure the accuracy of the content, the same should not be construed as a statement of law or used for any legal purpose. This application accepts no responsibility in relation to the accuracy, completeness, usefulness or otherwise, of the contents. Users are advised to verify check any information with the Transport Department.',
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w400,

@@ -26,7 +26,7 @@ class _ContactUsState extends State<ContactUs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.whiteColors,     
+      backgroundColor: AppColors.whiteColors,
       appBar: AppBar(
         backgroundColor: AppColors.appBarColors,
         centerTitle: true,
@@ -41,13 +41,16 @@ class _ContactUsState extends State<ContactUs> {
       ),
 
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(18, 30, 18, 0),
+        padding: const EdgeInsets.fromLTRB(18, 20, 18, 0),
         child: SingleChildScrollView(
           child: Column(
             children: [
+              SizedBox(height: 20),
               Form(
                 key: _formKey,
+
                 child: ListView.separated(
+                  physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return TextFormField(
@@ -75,7 +78,7 @@ class _ContactUsState extends State<ContactUs> {
                         }
                         return null;
                       },
-          
+
                       decoration: InputDecoration(
                         label: getTextDetails(
                           title: contactUsList[index]['title'],
@@ -119,10 +122,11 @@ class _ContactUsState extends State<ContactUs> {
                                   'Form Submitted Successfully',
                                   style: TextStyle(
                                     fontSize: 20,
-                                    fontWeight: FontWeight.w600,color: AppColors.whiteColors
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.whiteColors,
                                   ),
                                 ),
-                              ), 
+                              ),
                             ),
                           );
                         }
@@ -148,7 +152,6 @@ class _ContactUsState extends State<ContactUs> {
     required Color color,
   }) {
     return Card(
-      
       elevation: 2,
       color: color,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),

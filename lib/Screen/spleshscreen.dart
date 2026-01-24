@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rto_apps/Screen/home_screen.dart';
+import 'package:rto_apps/Screen/secon_splesh_screen.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 import 'package:rto_apps/helper/asset_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Spleshscreen extends StatefulWidget {
   const Spleshscreen({super.key});
@@ -19,22 +21,11 @@ class _SpleshscreenState extends State<Spleshscreen> {
   @override
   void initState() {
     super.initState();
+    checkAgreement();
     Future.delayed(const Duration(seconds: 3), () {
       setState(() {
         opacity = 0.0;
       });
-    });
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          transitionDuration: const Duration(milliseconds: 600),
-          pageBuilder: (context, animation, secondaryAnimation) => HomeScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return FadeTransition(opacity: animation, child: child);
-          },
-        ),
-      );
     });
   }
 
@@ -71,5 +62,31 @@ class _SpleshscreenState extends State<Spleshscreen> {
         ],
       ),
     );
+  }
+
+  Future<void> checkAgreement() async {
+    final prefs = await SharedPreferences.getInstance();
+    bool isAgreed = prefs.getBool('isAgreed') ?? false;
+
+    Future.delayed(Duration(seconds: 3), () {
+      if (isAgreed) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                SeconSpleshScreen(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(opacity: animation, child: child);
+                },
+          ),
+        );
+      }
+    });
   }
 }

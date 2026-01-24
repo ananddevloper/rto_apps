@@ -62,391 +62,400 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
         return true;
       },
 
-      child: Scaffold(
-        backgroundColor: AppColors.welcomeBackgroundColor,
-        appBar: AppBar(
-          centerTitle: true,
-          iconTheme: IconThemeData(color: AppColors.whiteColors),
-          backgroundColor: AppColors.appBarColors,
-          title: Text(
-            widget.showTimer ? 'EXAM' : widget.title,
-            style: TextStyle(
-              color: AppColors.whiteColors,
-              fontWeight: widget.showTimer ? FontWeight.bold : FontWeight.w600,
+      child: SafeArea(
+        bottom: false,
+        child: Scaffold(
+          backgroundColor: AppColors.welcomeBackgroundColor,
+          appBar: AppBar(
+            centerTitle: true,
+            iconTheme: IconThemeData(color: AppColors.whiteColors),
+            backgroundColor: AppColors.appBarColors,
+            title: Text(
+              widget.showTimer ? 'EXAM' : widget.title,
+              style: TextStyle(
+                color: AppColors.whiteColors,
+                fontWeight: widget.showTimer
+                    ? FontWeight.bold
+                    : FontWeight.w600,
+              ),
             ),
+            // actions: widget.showTimer ? [getTimerView()] : [],
           ),
-          // actions: widget.showTimer ? [getTimerView()] : [],
-        ),
 
-        body: widget.examList.isEmpty
-            ? Center(child: CircularProgressIndicator())
-            : Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 10,
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 7,
-                            horizontal: 15,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.appBarColors,
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          child: Row(
-                            children: [
-                              Text(
-                                'Questions:- ${currentIndex + 1}/${widget.examList.length}',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.whiteColors,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        widget.showTimer ? getTimerView() : Container(),
-                        if (!widget.showTimer)
-                          Row(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: 5,
-                                  horizontal: 15,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: AppColors.greenColors,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(25),
-                                    // topRight: Radius.circular(25),
-                                    bottomLeft: Radius.circular(25),
-                                    // bottomRight: Radius.circular(25),
-                                  ),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.check,
-                                      color: AppColors.whiteColors,
-                                      size: 20,
-                                    ),
-                                    SizedBox(width: 3),
-                                    Text(
-                                      rightCount.toString(),
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.whiteColors,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: 5,
-                                  horizontal: 15,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: AppColors.redColor,
-                                  borderRadius: BorderRadius.only(
-                                    // topLeft: Radius.circular(0),
-                                    topRight: Radius.circular(25),
-                                    // bottomLeft: Radius.circular(25),
-                                    bottomRight: Radius.circular(25),
-                                  ),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.close,
-                                      color: AppColors.whiteColors,
-                                      size: 20,
-                                    ),
-                                    SizedBox(width: 3),
-                                    Text(
-                                      wrongCount.toString(),
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.whiteColors,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-
-                        // getTimerView(),
-                      ],
-                    ),
-                    Expanded(
-                      child: PageView.builder(
-                        itemCount: widget.examList.length,
-                        controller: _pageController,
-                        physics: const NeverScrollableScrollPhysics(),
-                        onPageChanged: (index) {
-                          setState(() {
-                            currentIndex = index;
-                          });
-                        },
-                        itemBuilder: (context, index) {
-                          final questionModel = widget.examList[index];
-                          return SingleChildScrollView(
-                            child: Column(
+          body: widget.examList.isEmpty
+              ? Center(child: CircularProgressIndicator())
+              : Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 10,
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 7,
+                              horizontal: 15,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.appBarColors,
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            child: Row(
                               children: [
-                                SizedBox(height: 15),
-                                Card(
-                                  elevation: 2,
-                                  color: AppColors.whiteColors,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12.0),
+                                Text(
+                                  'Questions:- ${currentIndex + 1}/${widget.examList.length}',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.whiteColors,
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Q.${currentIndex + 1}.',
-                                              style: TextStyle(
-                                                fontSize: 19,
-                                                fontWeight: FontWeight.w600,
-                                                color: AppColors.blackColor,
-                                              ),
-                                            ),
-                                            SizedBox(width: 10),
-                                            Expanded(
-                                              child: Text(
-                                                "${questionModel.question}",
+                                ),
+                              ],
+                            ),
+                          ),
+                          widget.showTimer ? getTimerView() : Container(),
+                          if (!widget.showTimer)
+                            Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 5,
+                                    horizontal: 15,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.greenColors,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(25),
+                                      // topRight: Radius.circular(25),
+                                      bottomLeft: Radius.circular(25),
+                                      // bottomRight: Radius.circular(25),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.check,
+                                        color: AppColors.whiteColors,
+                                        size: 20,
+                                      ),
+                                      SizedBox(width: 3),
+                                      Text(
+                                        rightCount.toString(),
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.whiteColors,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 5,
+                                    horizontal: 15,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.redColor,
+                                    borderRadius: BorderRadius.only(
+                                      // topLeft: Radius.circular(0),
+                                      topRight: Radius.circular(25),
+                                      // bottomLeft: Radius.circular(25),
+                                      bottomRight: Radius.circular(25),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.close,
+                                        color: AppColors.whiteColors,
+                                        size: 20,
+                                      ),
+                                      SizedBox(width: 3),
+                                      Text(
+                                        wrongCount.toString(),
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.whiteColors,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                          // getTimerView(),
+                        ],
+                      ),
+                      Expanded(
+                        child: PageView.builder(
+                          itemCount: widget.examList.length,
+                          controller: _pageController,
+                          physics: const NeverScrollableScrollPhysics(),
+                          onPageChanged: (index) {
+                            setState(() {
+                              currentIndex = index;
+                            });
+                          },
+                          itemBuilder: (context, index) {
+                            final questionModel = widget.examList[index];
+                            return SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 15),
+                                  Card(
+                                    elevation: 2,
+                                    color: AppColors.whiteColors,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12.0),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Q.${currentIndex + 1}.',
                                                 style: TextStyle(
                                                   fontSize: 19,
                                                   fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        if (questionModel.image != null &&
-                                            questionModel.image!.isNotEmpty)
-                                          Center(
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(
-                                                8.0,
-                                              ),
-                                              child: Image.network(
-                                                questionModel.image ?? '',
-                                                height: 150,
-                                                width: 150,
-                                              ),
-                                            ),
-                                          ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: 10),
-                                ListView.separated(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        //  if (questionModel.isAnswered) return;
-                                        /// only 1 optin select hoaga
-                                        // Answer select karo
-
-                                        if (!widget.showTimer &&
-                                            questionModel.isAnswered)
-                                          return;
-
-                                        questionModel.selectAnswer(
-                                          questionModel.options[index],
-                                        );
-
-                                        setState(() {});
-                                      },
-
-                                      child: Card(
-                                        elevation: 2,
-                                        color: questionModel.getOptionColor(
-                                          questionModel.options[index],
-                                          widget.showTimer,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            8,
-                                          ),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            vertical: 12.0,
-                                            horizontal: 15,
-                                          ),
-
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                '${optionLabel(index)}.',
-                                                style: TextStyle(
-                                                  fontSize: 17,
                                                   color: AppColors.blackColor,
                                                 ),
                                               ),
                                               SizedBox(width: 10),
                                               Expanded(
                                                 child: Text(
-                                                  questionModel.options[index],
+                                                  "${questionModel.question}",
                                                   style: TextStyle(
-                                                    fontSize: 17,
+                                                    fontSize: 19,
+                                                    fontWeight: FontWeight.w600,
                                                   ),
                                                 ),
                                               ),
                                             ],
                                           ),
-                                        ),
+                                          if (questionModel.image != null &&
+                                              questionModel.image!.isNotEmpty)
+                                            Center(
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(
+                                                  8.0,
+                                                ),
+                                                child: Image.network(
+                                                  questionModel.image ?? '',
+                                                  height: 150,
+                                                  width: 150,
+                                                ),
+                                              ),
+                                            ),
+                                        ],
                                       ),
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) => Divider(
-                                    color: Colors.transparent,
-                                    height: 10,
-                                  ),
-                                  itemCount: questionModel.options.length,
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Card(
-                          elevation: 3,
-                          color: AppColors.whiteColors,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(60),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 40,
-                              vertical: 14,
-                            ),
-                            child: GestureDetector(
-                              onTap: () {
-                                if (currentIndex > 0) {
-                                  _pageController.previousPage(
-                                    duration: const Duration(milliseconds: 300),
-                                    curve: Curves.easeInOut,
-                                  );
-                                }
-                              },
-                              child: Text(
-                                'Previous',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: AppColors.appBarColors,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            if (currentIndex < widget.examList.length - 1) {
-                              _pageController.nextPage(
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeInOut,
-                              );
-                            } else {
-                              if (widget.title == 'Exam History') {
-                                Navigator.pop(context);
-                                return;
-                              }
-
-                              if (widget.showTimer) {
-                                bool isPass =
-                                    rightCount >=
-                                    11; // TODO:need to change to 12
-
-                                TestHistoryModal history = TestHistoryModal(
-                                  questionList: widget.examList,
-                                  dateTime: DateTime.now(),
-                                  isPass: isPass,
-                                );
-                                await saveTestHistory(history);
-
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ResultPage(
-                                      questions: widget.examList,
-                                      result: isPass,
-                                      title: widget.title,
-                                      showTimer: widget.showTimer,
                                     ),
                                   ),
-                                );
-                              } else {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        PracticeQuestionResultPage(
-                                          questions: widget.examList,
-                                          result: widget.showTimer,
-                                          title: widget.title,
+                                  SizedBox(height: 10),
+                                  ListView.separated(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemBuilder: (context, index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          //  if (questionModel.isAnswered) return;
+                                          /// only 1 optin select hoaga
+                                          // Answer select karo
+
+                                          if (!widget.showTimer &&
+                                              questionModel.isAnswered)
+                                            return;
+
+                                          questionModel.selectAnswer(
+                                            questionModel.options[index],
+                                          );
+
+                                          setState(() {});
+                                        },
+
+                                        child: Card(
+                                          elevation: 2,
+                                          color: questionModel.getOptionColor(
+                                            questionModel.options[index],
+                                            widget.showTimer,
+                                          ),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              8,
+                                            ),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: 12.0,
+                                              horizontal: 15,
+                                            ),
+
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  '${optionLabel(index)}.',
+                                                  style: TextStyle(
+                                                    fontSize: 17,
+                                                    color: AppColors.blackColor,
+                                                  ),
+                                                ),
+                                                SizedBox(width: 10),
+                                                Expanded(
+                                                  child: Text(
+                                                    questionModel
+                                                        .options[index],
+                                                    style: TextStyle(
+                                                      fontSize: 17,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                         ),
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) =>
+                                        Divider(
+                                          color: Colors.transparent,
+                                          height: 10,
+                                        ),
+                                    itemCount: questionModel.options.length,
                                   ),
-                                );
-                              }
-                            }
+                                ],
+                              ),
+                            );
                           },
-                          child: Card(
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Card(
                             elevation: 3,
-                            color: AppColors.appBarColors,
+                            color: AppColors.whiteColors,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(60),
                             ),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 50,
-                                vertical: 15,
+                                horizontal: 40,
+                                vertical: 14,
                               ),
-                              child: Text(
-                                currentIndex == widget.examList.length - 1
-                                    ? 'Submit'
-                                    : 'Next',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: AppColors.whiteColors,
-                                  fontWeight: FontWeight.w600,
+                              child: GestureDetector(
+                                onTap: () {
+                                  if (currentIndex > 0) {
+                                    _pageController.previousPage(
+                                      duration: const Duration(
+                                        milliseconds: 300,
+                                      ),
+                                      curve: Curves.easeInOut,
+                                    );
+                                  }
+                                },
+                                child: Text(
+                                  'Previous',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: AppColors.appBarColors,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          GestureDetector(
+                            onTap: () async {
+                              if (currentIndex < widget.examList.length - 1) {
+                                _pageController.nextPage(
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut,
+                                );
+                              } else {
+                                if (widget.title == 'Exam History') {
+                                  Navigator.pop(context);
+                                  return;
+                                }
+
+                                if (widget.showTimer) {
+                                  bool isPass =
+                                      rightCount >=
+                                      11; // TODO:need to change to 12
+
+                                  TestHistoryModal history = TestHistoryModal(
+                                    questionList: widget.examList,
+                                    dateTime: DateTime.now(),
+                                    isPass: isPass,
+                                  );
+                                  await saveTestHistory(history);
+
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ResultPage(
+                                        questions: widget.examList,
+                                        result: isPass,
+                                        title: widget.title,
+                                        showTimer: widget.showTimer,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          PracticeQuestionResultPage(
+                                            questions: widget.examList,
+                                            result: widget.showTimer,
+                                            title: widget.title,
+                                          ),
+                                    ),
+                                  );
+                                }
+                              }
+                            },
+                            child: Card(
+                              elevation: 3,
+                              color: AppColors.appBarColors,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(60),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 50,
+                                  vertical: 15,
+                                ),
+                                child: Text(
+                                  currentIndex == widget.examList.length - 1
+                                      ? 'Submit'
+                                      : 'Next',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: AppColors.whiteColors,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+        ),
       ),
     );
   }
@@ -574,7 +583,7 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
               ),
             ),
             content: Text(
-            'If you want to exit from the exam, you will lose your progress.',
+              'If you want to exit from the exam, you will lose your progress.',
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,

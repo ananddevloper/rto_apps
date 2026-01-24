@@ -69,7 +69,8 @@ class _ResultPageState extends State<ResultPage> {
                     SizedBox(height: 20),
                     Text(
                       textAlign: TextAlign.center,
-                      'You\'ve just cleared driving licence test exam.\n Practice more to increase your success\n chances in actual test.',                      style: TextStyle(
+                      'You\'ve just cleared driving licence test exam.\n Practice more to increase your success\n chances in actual test.',
+                      style: TextStyle(
                         color: AppColors.whiteColors,
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -162,7 +163,7 @@ class _ResultPageState extends State<ResultPage> {
                     SizedBox(height: 20),
                     Text(
                       textAlign: TextAlign.center,
-                     'Sorry, you have failed the driving license test. We would suggest you refer to the question bank and try again.',
+                      'Sorry, you have failed the driving license test. We would suggest you refer to the question bank and try again.',
                       style: TextStyle(
                         color: AppColors.whiteColors,
                         fontSize: 16,

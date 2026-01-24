@@ -40,13 +40,15 @@ class _PracticeQuestionSectionPageState
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.homePageBackground,
-      appBar: AppBar(centerTitle: true,
+      appBar: AppBar(
+        centerTitle: true,
         iconTheme: IconThemeData(color: AppColors.whiteColors),
-        title: Text(textAlign: TextAlign.center,
+        title: Text(
+          textAlign: TextAlign.center,
           'Practice Questions',
           style: TextStyle(
             color: AppColors.whiteColors,
-            
+
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -55,11 +57,11 @@ class _PracticeQuestionSectionPageState
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Scrollbar(
-         // thumbVisibility: true,
+          // thumbVisibility: true,
           thickness: 10,
           radius: Radius.circular(30),
           child: ListView.separated(
-            shrinkWrap: true,            
+            shrinkWrap: true,
             itemBuilder: (context, index) {
               return Card(
                 elevation: 2,
@@ -73,14 +75,13 @@ class _PracticeQuestionSectionPageState
                     index: practiceQuestionSectionList[index].index,
                     title: practiceQuestionSectionList[index].title,
                     onTap: () {
-                      int setIndex =
-                          practiceQuestionSectionList[index].index;
+                      int setIndex = practiceQuestionSectionList[index].index;
                       int startIndex = (setIndex - 1) * 31;
                       int endIndex = startIndex + 30;
 
                       print('start index $startIndex');
                       print('end index $endIndex');
-          
+
                       List<QuestionModel> slectedQuestions = allQuestions
                           .sublist(
                             startIndex,

@@ -4,6 +4,7 @@ import 'package:rto_apps/Screen/introduction_page.dart';
 import 'package:rto_apps/Screen/practice_question_result_page.dart';
 import 'package:rto_apps/Screen/practice_question_section_page.dart';
 import 'package:rto_apps/Screen/practice_questions.dart';
+import 'package:rto_apps/Screen/secon_splesh_screen.dart';
 import 'package:rto_apps/Screen/spleshscreen.dart';
 import 'package:rto_apps/Screen/result_page.dart';
 
@@ -19,16 +20,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'RTO EXAM',
-      theme: ThemeData(        
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-      ),
+      theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
       home: Spleshscreen(),
+
       // PracticeQuestionResultPage(questions: [],)
-      
-     
+      // SecondSpleshScreen(),
     );
   }
 }
+
 class MyHomePage {
   const MyHomePage();
 }

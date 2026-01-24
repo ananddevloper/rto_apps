@@ -11,7 +11,7 @@ class ProcessDrivingLicence extends StatefulWidget {
 }
 
 class _ProcessDrivingLicenceState extends State<ProcessDrivingLicence> {
-   WebViewController? controller;
+  WebViewController? controller;
   String htmlData = '';
   bool _isLoading = true;
   @override
@@ -20,7 +20,6 @@ class _ProcessDrivingLicenceState extends State<ProcessDrivingLicence> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       loadHtmlData();
     });
-    
   }
 
   @override
@@ -39,7 +38,9 @@ class _ProcessDrivingLicenceState extends State<ProcessDrivingLicence> {
           ),
         ),
       ),
-      body: _isLoading? Center(child: CircularProgressIndicator(),) :WebViewWidget(controller: controller!),
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : WebViewWidget(controller: controller!),
     );
   }
 
@@ -54,6 +55,5 @@ class _ProcessDrivingLicenceState extends State<ProcessDrivingLicence> {
     setState(() {
       _isLoading = false;
     });
-    
   }
 }

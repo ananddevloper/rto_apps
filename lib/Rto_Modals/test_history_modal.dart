@@ -8,7 +8,7 @@ class TestHistoryModal {
   final bool isPass;
 
   TestHistoryModal({
-   required this.questionList,
+    required this.questionList,
     required this.dateTime,
     required this.isPass,
   });
@@ -30,5 +30,4 @@ class TestHistoryModal {
       'isPass': isPass,
     };
   }
-
 }

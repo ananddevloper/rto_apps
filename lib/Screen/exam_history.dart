@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ExamHistory extends StatefulWidget {
   const ExamHistory({super.key});
-
   @override
   State<ExamHistory> createState() => _ExamHistoryState();
 }
@@ -28,13 +27,13 @@ class _ExamHistoryState extends State<ExamHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.homePageBackground,
-      appBar: AppBar(centerTitle: true,
+      appBar: AppBar(
+        centerTitle: true,
         iconTheme: IconThemeData(color: AppColors.whiteColors),
         backgroundColor: AppColors.appBarColors,
         title: Text(
           'Exam History',
           style: TextStyle(
-            
             fontWeight: FontWeight.bold,
             color: AppColors.whiteColors,
           ),
@@ -50,13 +49,11 @@ class _ExamHistoryState extends State<ExamHistory> {
               ),
             )
           : Scrollbar(
-            thickness: 10,
-            radius: Radius.circular(30),
-            
-            child: Padding(
+              thickness: 10,
+              radius: Radius.circular(30),
+              child: Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: ListView.separated(
-                 
                   itemBuilder: (context, index) {
                     final history = historyList[index];
                     return InkWell(
@@ -121,7 +118,7 @@ class _ExamHistoryState extends State<ExamHistory> {
                   itemCount: historyList.length,
                 ),
               ),
-          ),
+            ),
     );
   }
 
