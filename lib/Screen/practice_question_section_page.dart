@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:rto_apps/Screen/introduction_page.dart';
 import 'package:rto_apps/Screen/practice_questions.dart';
 import 'package:rto_apps/Rto_Modals/question_model.dart';
+import 'package:rto_apps/helper/add_helper.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 import 'package:rto_apps/helper/asset_helper.dart';
+import 'package:rto_apps/widget/intersetital_ad_helper.dart';
+import 'package:rto_apps/widget/large_banner_widget.dart';
+import 'package:rto_apps/widget/small_banner_widget.dart';
 
 class PracticeQuestionSectionPage extends StatefulWidget {
   const PracticeQuestionSectionPage({
@@ -19,11 +24,15 @@ class PracticeQuestionSectionPage extends StatefulWidget {
 
 class _PracticeQuestionSectionPageState
     extends State<PracticeQuestionSectionPage> {
+  late BannerAd bannerAd;
+  bool isAdLoaded = false;
   List<QuestionModel> allQuestions = [];
 
   @override
   void initState() {
     // TODO: implement initState
+    getBannerAd();
+
     allQuestions = widget.practiceQuestions;
     super.initState();
   }
@@ -48,12 +57,14 @@ class _PracticeQuestionSectionPageState
           'Practice Questions',
           style: TextStyle(
             color: AppColors.whiteColors,
-
             fontWeight: FontWeight.w600,
           ),
         ),
         backgroundColor: AppColors.appBarColors,
       ),
+
+      bottomNavigationBar: SmallBannerWidget(),
+
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Scrollbar(
@@ -89,23 +100,36 @@ class _PracticeQuestionSectionPageState
                                 ? allQuestions.length
                                 : endIndex,
                           );
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PracticeQuestions(
-                            title: practiceQuestionSectionList[index].title,
-                            examList: slectedQuestions,
-                            showTimer: false,
-                          ),
-                        ),
+                      InterstitialAdManager.showAd(
+                        onAdClosed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PracticeQuestions(
+                                title: practiceQuestionSectionList[index].title,
+                                examList: slectedQuestions,
+                                showTimer: false,
+                              ),
+                            ),
+                          );
+                        },
                       );
+                      
                     },
                   ),
                 ),
               );
             },
-            separatorBuilder: (context, index) =>
-                Divider(color: Colors.transparent),
+            separatorBuilder: (context, index) {
+              return Column(
+                children: [
+                  ((index + 1) % 4 == 0)
+                      ? const LargeBannerAdWidget()
+                      : SizedBox(height: 5),
+                ],
+              );
+            },
+
             itemCount: practiceQuestionSectionList.length,
           ),
         ),
@@ -143,5 +167,21 @@ class _PracticeQuestionSectionPageState
         ],
       ),
     );
+  }
+
+  Future<void> getBannerAd() async {
+    bannerAd = BannerAd(
+      size: AdSize.banner,
+      adUnitId: AddHelper.bannerAdId,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            isAdLoaded = true;
+          });
+        },
+      ),
+      request: const AdRequest(),
+    );
+    bannerAd.load();
   }
 }

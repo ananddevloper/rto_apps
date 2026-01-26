@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:rto_apps/helper/add_helper.dart';
 import 'package:rto_apps/helper/app_colors.dart';
+import 'package:rto_apps/widget/small_banner_widget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class CommonWebView extends StatefulWidget {
@@ -12,11 +15,14 @@ class CommonWebView extends StatefulWidget {
 }
 
 class _CommonWebViewState extends State<CommonWebView> {
+    late BannerAd bannerAd;
+  bool isAdLoaded = false;
   late final WebViewController controller;
   bool isLoading = true;
 
   void initState() {
     super.initState();
+     getBannerAd();
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
@@ -52,6 +58,7 @@ class _CommonWebViewState extends State<CommonWebView> {
           ),
         ),
       ),
+       bottomNavigationBar: SmallBannerWidget(),
       body: Stack(
         children: [
           WebViewWidget(controller: controller),
@@ -63,4 +70,21 @@ class _CommonWebViewState extends State<CommonWebView> {
       ),
     );
   }
+  
+  Future<void> getBannerAd() async {
+    bannerAd = BannerAd(
+      size: AdSize.banner,
+      adUnitId: AddHelper.bannerAdId,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            isAdLoaded = true;
+          });
+        },
+      ),
+      request: const AdRequest(),
+    );
+    bannerAd.load();
+  }
+
 }

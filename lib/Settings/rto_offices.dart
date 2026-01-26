@@ -2,10 +2,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_expanded_tile/flutter_expanded_tile.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:rto_apps/Rto_Modals/rto_offices.dart';
 import 'package:rto_apps/Settings/stateSelaction.dart';
+import 'package:rto_apps/helper/add_helper.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 import 'package:rto_apps/helper/asset_helper.dart';
+import 'package:rto_apps/widget/large_banner_widget.dart';
+import 'package:rto_apps/widget/small_banner_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RtoOffices extends StatefulWidget {
@@ -15,6 +19,9 @@ class RtoOffices extends StatefulWidget {
 }
 
 class _RtoOfficesState extends State<RtoOffices> {
+  late BannerAd bannerAd;
+  bool isAdLoaded = false;
+
   List<RtoOfficesModal> rtoOfficeList = [];
   Map<String, dynamic>? allStateRtoData;
   bool _isLoading = true;
@@ -23,6 +30,7 @@ class _RtoOfficesState extends State<RtoOffices> {
   @override
   void initState() {
     // TODO: implement initState
+    getBannerAd();
     loadingRtoOffices();
     super.initState();
   }
@@ -43,6 +51,7 @@ class _RtoOfficesState extends State<RtoOffices> {
           ),
         ),
       ),
+      bottomNavigationBar: SmallBannerWidget(),
       body: _isLoading
           ? Center(
               child: CircularProgressIndicator(
@@ -114,7 +123,18 @@ class _RtoOfficesState extends State<RtoOffices> {
                   child: ExpandedTileList.separated(
                     itemCount: rtoOfficeList.length,
                     separatorBuilder: (context, index) =>
-                        Divider(color: Colors.transparent),
+                        Column(
+                          children: [
+                            Divider(color: Colors.transparent, height: 5,),
+                            ((index + 1) % 4 == 0)
+                          ? Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: const LargeBannerAdWidget(),
+                          )
+                          : SizedBox.shrink(),
+                          ],
+                        ),
+                        
                     itemBuilder: (context, index, controller) {
                       final rto = rtoOfficeList[index];
                       return ExpandedTile(
@@ -193,5 +213,21 @@ class _RtoOfficesState extends State<RtoOffices> {
       _isLoading = false;
     });
     getStateRtoList();
+  }
+
+  Future<void> getBannerAd() async {
+    bannerAd = BannerAd(
+      size: AdSize.banner,
+      adUnitId: AddHelper.bannerAdId,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            isAdLoaded = true;
+          });
+        },
+      ),
+      request: const AdRequest(),
+    );
+    bannerAd.load();
   }
 }

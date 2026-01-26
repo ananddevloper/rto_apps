@@ -1,9 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:rto_apps/Rto_Modals/question_model.dart';
+import 'package:rto_apps/helper/add_helper.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 import 'package:rto_apps/helper/asset_helper.dart';
+import 'package:rto_apps/widget/large_banner_widget.dart';
+import 'package:rto_apps/widget/small_banner_widget.dart';
 
 class QuestionBank extends StatefulWidget {
   const QuestionBank({super.key, required this.questionList});
@@ -13,8 +17,10 @@ class QuestionBank extends StatefulWidget {
 }
 
 class _QuestionBankState extends State<QuestionBank> {
+  late BannerAd bannerAd;
+  bool isAdLoaded = false;
+
   List<QuestionModel> questionBankList = [];
-  //ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,6 +38,7 @@ class _QuestionBankState extends State<QuestionBank> {
           ),
         ),
       ),
+      bottomNavigationBar: SmallBannerWidget(),
       body: questionBankList.isEmpty
           ? Center(child: CircularProgressIndicator())
           : Scrollbar(
@@ -77,9 +84,20 @@ class _QuestionBankState extends State<QuestionBank> {
                         ),
                       ),
                     ),
+                    
                   );
                 },
-                separatorBuilder: (context, index) => SizedBox(height: 5),
+                
+                separatorBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      ((index + 1) % 4 == 0)
+                          ? const LargeBannerAdWidget()
+                          : SizedBox(height: 5),                          
+                    ],
+                  );
+                  
+                },
                 itemCount: questionBankList.length,
               ),
             ),
@@ -88,7 +106,25 @@ class _QuestionBankState extends State<QuestionBank> {
 
   @override
   void initState() {
+    getBannerAd();
+
     super.initState();
     questionBankList = widget.questionList;
+  }
+
+  Future<void> getBannerAd() async {
+    bannerAd = BannerAd(
+      size: AdSize.banner,
+      adUnitId: AddHelper.bannerAdId,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            isAdLoaded = true;
+          });
+        },
+      ),
+      request: const AdRequest(),
+    );
+    bannerAd.load();
   }
 }

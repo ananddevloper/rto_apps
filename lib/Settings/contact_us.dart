@@ -1,5 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:rto_apps/helper/add_helper.dart';
 import 'package:rto_apps/helper/app_colors.dart';
+import 'package:rto_apps/widget/large_banner_widget.dart';
+import 'package:rto_apps/widget/small_banner_widget.dart';
 
 class ContactUs extends StatefulWidget {
   const ContactUs({super.key});
@@ -8,6 +14,8 @@ class ContactUs extends StatefulWidget {
 }
 
 class _ContactUsState extends State<ContactUs> {
+  late BannerAd bannerAd;
+  bool isAdLoaded = false;
   final _formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -39,7 +47,7 @@ class _ContactUsState extends State<ContactUs> {
           ),
         ),
       ),
-
+      bottomNavigationBar: SmallBannerWidget(),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(18, 20, 18, 0),
         child: SingleChildScrollView(
@@ -48,13 +56,30 @@ class _ContactUsState extends State<ContactUs> {
               SizedBox(height: 20),
               Form(
                 key: _formKey,
-
                 child: ListView.separated(
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return TextFormField(
                       controller: contactUsList[index]['controller'],
+                      maxLength:
+                          contactUsList[index]['title'] ==
+                              'Phone Number (Optional)'
+                          ? 10
+                          : null,
+                      keyboardType:
+                          (contactUsList[index]['title'] ==
+                              'Phone Number (Optional)')
+                          ? TextInputType.phone
+                          : TextInputType.emailAddress,
+                      inputFormatters:
+                          contactUsList[index]['title'] ==
+                              'Phone Number (Optional)'
+                          ? [
+                              FilteringTextInputFormatter.digitsOnly,
+                              LengthLimitingTextInputFormatter(10),
+                            ]
+                          : null,
                       validator: (value) {
                         String title = contactUsList[index]['title'];
                         if (value == null || value.trim().isEmpty) {
@@ -70,12 +95,22 @@ class _ContactUsState extends State<ContactUs> {
                             return 'Enter valid email';
                           }
                         }
-                        if (title == 'Phone Number (Optional)' &&
-                            value.isNotEmpty) {
-                          if (!RegExp(r'^[6-9]\d{9}$').hasMatch(value.trim())) {
-                            return 'Enter valid phone number';
+                        if (title == 'Phone Number (Optional)') {
+                          if (value == null || value.trim().isEmpty) {
+                            return 'Phone number is required';
+                          }
+
+                          // 🔴 EXACT 10 DIGITS
+                          if (value.length != 10) {
+                            return 'Phone number must be exactly 10 digits';
+                          }
+
+                          // 🔴 INDIAN NUMBER VALIDATION
+                          if (!RegExp(r'^[6-9]\d{9}$').hasMatch(value)) {
+                            return 'Enter valid Indian phone number';
                           }
                         }
+
                         return null;
                       },
 
@@ -84,6 +119,7 @@ class _ContactUsState extends State<ContactUs> {
                           title: contactUsList[index]['title'],
                         ),
                         border: OutlineInputBorder(),
+                        counterText: '',
                       ),
                     );
                   },
@@ -112,8 +148,9 @@ class _ContactUsState extends State<ContactUs> {
                   ),
                   Expanded(
                     child: GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         if (_formKey.currentState!.validate()) {
+                          await _sendDetailsTofirebase();
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               backgroundColor: AppColors.appBarColors,
@@ -129,6 +166,7 @@ class _ContactUsState extends State<ContactUs> {
                               ),
                             ),
                           );
+                          Navigator.pop(context);
                         }
                       },
                       child: getContectUsButto(
@@ -139,11 +177,25 @@ class _ContactUsState extends State<ContactUs> {
                   ),
                 ],
               ),
+              SizedBox(height: 50),
+              LargeBannerAdWidget(),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future _sendDetailsTofirebase() async {
+    final firestore = FirebaseFirestore.instance;
+    await firestore.collection('contactUsQuery').add({
+      'name': nameController.text,
+      'email': emailController.text,
+      'phoneNumber': phoneNumberController.text,
+      'message': messageController.text,
+      'city': cityController.text,
+      'dateTime': Timestamp.now(),
+    });
   }
 
   Card getContectUsButto({
@@ -180,5 +232,28 @@ class _ContactUsState extends State<ContactUs> {
         color: Colors.black87,
       ),
     );
+  }
+
+  @override
+  void initState() {
+    // loadingRtoOffices();
+    getBannerAd();
+    super.initState();
+  }
+
+  Future<void> getBannerAd() async {
+    bannerAd = BannerAd(
+      size: AdSize.banner,
+      adUnitId: AddHelper.bannerAdId,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            isAdLoaded = true;
+          });
+        },
+      ),
+      request: const AdRequest(),
+    );
+    bannerAd.load();
   }
 }

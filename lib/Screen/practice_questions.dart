@@ -3,12 +3,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:rto_apps/Rto_Modals/test_history_modal.dart';
 import 'package:rto_apps/Screen/practice_question_result_page.dart';
 import 'package:rto_apps/Rto_Modals/question_model.dart';
 import 'package:rto_apps/Screen/result_page.dart';
+import 'package:rto_apps/helper/add_helper.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 import 'package:rto_apps/helper/asset_helper.dart';
+import 'package:rto_apps/widget/intersetital_ad_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PracticeQuestions extends StatefulWidget {
@@ -26,6 +29,9 @@ class PracticeQuestions extends StatefulWidget {
 }
 
 class _PracticeQuestionsState extends State<PracticeQuestions> {
+  InterstitialAd? _interstitialAd;
+  bool _isAdLoaded = false;
+
   final PageController _pageController = PageController();
   int currentIndex = 0;
   // int rightCount = 0;
@@ -35,9 +41,11 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
   @override
   void initState() {
     super.initState();
+
     if (widget.showTimer) {
       startTestTimer();
     }
+    // loadInterstitialAd();
   }
 
   int get rightCount {
@@ -280,7 +288,6 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                                           questionModel.selectAnswer(
                                             questionModel.options[index],
                                           );
-
                                           setState(() {});
                                         },
 
@@ -383,47 +390,10 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
                                   curve: Curves.easeInOut,
                                 );
                               } else {
-                                if (widget.title == 'Exam History') {
-                                  Navigator.pop(context);
-                                  return;
-                                }
-
-                                if (widget.showTimer) {
-                                  bool isPass =
-                                      rightCount >=
-                                      11; // TODO:need to change to 12
-
-                                  TestHistoryModal history = TestHistoryModal(
-                                    questionList: widget.examList,
-                                    dateTime: DateTime.now(),
-                                    isPass: isPass,
-                                  );
-                                  await saveTestHistory(history);
-
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ResultPage(
-                                        questions: widget.examList,
-                                        result: isPass,
-                                        title: widget.title,
-                                        showTimer: widget.showTimer,
-                                      ),
-                                    ),
-                                  );
-                                } else {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          PracticeQuestionResultPage(
-                                            questions: widget.examList,
-                                            result: widget.showTimer,
-                                            title: widget.title,
-                                          ),
-                                    ),
-                                  );
-                                }
+                               
+                                InterstitialAdManager.showAd(onAdClosed: ()async{
+                                  getSubmmitButtonClick();
+                                });
                               }
                             },
                             child: Card(
@@ -637,5 +607,45 @@ class _PracticeQuestionsState extends State<PracticeQuestions> {
 
     //Save again
     await pref.setStringList('test_history', historyList);
+  }
+
+  void getSubmmitButtonClick() async {
+    if (widget.title == 'Exam History') {
+      Navigator.pop(context);
+      return;
+    }
+    if (widget.showTimer) {
+      bool isPass = rightCount >= 11; // TODO:need to change to 12
+
+      TestHistoryModal history = TestHistoryModal(
+        questionList: widget.examList,
+        dateTime: DateTime.now(),
+        isPass: isPass,
+      );
+      await saveTestHistory(history);
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ResultPage(
+            questions: widget.examList,
+            result: isPass,
+            title: widget.title,
+            showTimer: widget.showTimer,
+          ),
+        ),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PracticeQuestionResultPage(
+            questions: widget.examList,
+            result: widget.showTimer,
+            title: widget.title,
+          ),
+        ),
+      );
+    }
   }
 }

@@ -1,10 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:rto_apps/Screen/dialog_box.dart';
 import 'package:rto_apps/Screen/practice_question_section_page.dart';
 import 'package:rto_apps/Screen/practice_questions.dart';
 import 'package:rto_apps/Rto_Modals/question_model.dart';
+import 'package:rto_apps/helper/add_helper.dart';
 import 'package:rto_apps/helper/app_colors.dart';
+import 'package:rto_apps/widget/intersetital_ad_helper.dart';
+import 'package:rto_apps/widget/reward_ad_helper.dart';
+import 'package:rto_apps/widget/small_banner_widget.dart';
 
 class IntroductionPage extends StatefulWidget {
   const IntroductionPage({
@@ -19,6 +25,8 @@ class IntroductionPage extends StatefulWidget {
 }
 
 class _IntroductionPageState extends State<IntroductionPage> {
+  late BannerAd bannerAd;
+  bool isAdLoaded = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +43,8 @@ class _IntroductionPageState extends State<IntroductionPage> {
           ),
         ),
       ),
+      bottomNavigationBar: SmallBannerWidget(),
+
       body: Padding(
         padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
         child: Column(
@@ -72,17 +82,28 @@ class _IntroductionPageState extends State<IntroductionPage> {
                       SizedBox(height: 20),
                       InkWell(
                         onTap: () {
-                          List<QuestionModel> random20Questions =
-                              getRandomQuestions(widget.examList, 15);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PracticeQuestions(
-                                title: widget.title,
-                                examList: random20Questions,
-                                showTimer: true,
-                              ),
-                            ),
+                          StartExamDialog.show(
+                            context: context,
+                            onStart: () {
+                              RewardAdHelper.showAd(
+                                onRewardEarned: (reward) {
+                                  List<QuestionModel> random20Questions =
+                                      getRandomQuestions(widget.examList, 15);
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PracticeQuestions(
+                                        title: widget.title,
+                                        examList: random20Questions,
+                                        showTimer: true,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                              return;
+                             
+                            },
                           );
                         },
                         child: Card(
@@ -125,5 +146,28 @@ class _IntroductionPageState extends State<IntroductionPage> {
     List<QuestionModel> shuffledList = List.from(questions);
     shuffledList.shuffle(); // 🔀 random order
     return shuffledList.take(count).toList();
+  }
+
+  @override
+  void initState() {
+    // loadingRtoOffices();
+    getBannerAd();
+    super.initState();
+  }
+
+  Future<void> getBannerAd() async {
+    bannerAd = BannerAd(
+      size: AdSize.banner,
+      adUnitId: AddHelper.bannerAdId,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            isAdLoaded = true;
+          });
+        },
+      ),
+      request: const AdRequest(),
+    );
+    bannerAd.load();
   }
 }

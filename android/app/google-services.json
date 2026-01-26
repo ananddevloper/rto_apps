@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "944769452022",
+    "project_id": "rto-exam-9134e",
+    "storage_bucket": "rto-exam-9134e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:944769452022:android:4c8e8ed01c2185ee78e9d7",
+        "android_client_info": {
+          "package_name": "com.avtechy.rto_apps"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCinpHEdhqp6mFjp_tgVjMk8dHC0gLu0uA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

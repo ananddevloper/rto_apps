@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:rto_apps/Settings/contact_us.dart';
 import 'package:rto_apps/Settings/privacy_policy.dart';
 import 'package:rto_apps/Settings/process_driving_licence.dart';
 import 'package:rto_apps/Settings/rto_offices.dart';
 import 'package:rto_apps/Settings/stateSelaction.dart';
+import 'package:rto_apps/helper/add_helper.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 import 'package:rto_apps/helper/asset_helper.dart';
 import 'package:share_plus/share_plus.dart';
@@ -17,9 +19,14 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+ 
+  late BannerAd bannerAd;
+  bool isAdLoaded = false;
+
   String appVersion = '';
   TextEditingController searchController = TextEditingController();
   List<Map<String, dynamic>> get getSettingsList => [
+   
     {
       'title': 'Form',
       'icons': Icons.description,
@@ -118,6 +125,7 @@ class _SettingsState extends State<Settings> {
   void initState() {
     super.initState();
     // showDisclaimerDialog();
+    getBannerAd();
     loadAppVersion();
   }
 
@@ -137,6 +145,13 @@ class _SettingsState extends State<Settings> {
           ),
         ),
       ),
+      bottomNavigationBar: isAdLoaded
+          ? SizedBox(
+              height: bannerAd.size.height.toDouble(),
+              width: bannerAd.size.width.toDouble(),
+              child: AdWidget(ad: bannerAd),
+            )
+          : null,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -289,5 +304,20 @@ class _SettingsState extends State<Settings> {
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       throw 'Could not launch Google Maps';
     }
+  }
+  Future<void> getBannerAd() async {
+    bannerAd = BannerAd(
+      size: AdSize.banner,
+      adUnitId: AddHelper.bannerAdId,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            isAdLoaded = true;
+          });
+        },
+      ),
+      request: const AdRequest(),
+    );
+    bannerAd.load();
   }
 }

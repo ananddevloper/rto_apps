@@ -1,9 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:rto_apps/Rto_Modals/test_history_modal.dart';
+import 'package:rto_apps/Screen/dialog_box.dart';
 import 'package:rto_apps/Screen/practice_questions.dart';
+import 'package:rto_apps/helper/add_helper.dart';
 import 'package:rto_apps/helper/app_colors.dart';
+import 'package:rto_apps/widget/intersetital_ad_helper.dart';
+import 'package:rto_apps/widget/large_banner_widget.dart';
+import 'package:rto_apps/widget/small_banner_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ExamHistory extends StatefulWidget {
@@ -13,12 +19,15 @@ class ExamHistory extends StatefulWidget {
 }
 
 class _ExamHistoryState extends State<ExamHistory> {
+  late BannerAd bannerAd;
+  bool isAdLoaded = false;
+  //////////////////////////////////
   List<TestHistoryModal> historyList = [];
   bool isLoading = true;
 
   @override
   void initState() {
-    // TODO: implement initState
+    getBannerAd();
     super.initState();
     getTestHistory();
   }
@@ -39,6 +48,7 @@ class _ExamHistoryState extends State<ExamHistory> {
           ),
         ),
       ),
+      bottomNavigationBar: SmallBannerWidget(),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : historyList.isEmpty
@@ -58,15 +68,19 @@ class _ExamHistoryState extends State<ExamHistory> {
                     final history = historyList[index];
                     return InkWell(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PracticeQuestions(
-                              examList: history.questionList ?? [],
-                              title: 'Exam History',
-                              showTimer: false,
-                            ),
-                          ),
+                        InterstitialAdManager.showAd(
+                          onAdClosed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PracticeQuestions(
+                                  examList: history.questionList ?? [],
+                                  title: 'Exam History',
+                                  showTimer: false,
+                                ),
+                              ),
+                            );
+                          },
                         );
                       },
                       child: Card(
@@ -113,8 +127,15 @@ class _ExamHistoryState extends State<ExamHistory> {
                       ),
                     );
                   },
-                  separatorBuilder: (context, index) =>
-                      Divider(color: Colors.transparent),
+                  separatorBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        ((index + 1) % 4 == 0)
+                            ? const LargeBannerAdWidget()
+                            : SizedBox(height: 5),
+                      ],
+                    );
+                  },
                   itemCount: historyList.length,
                 ),
               ),
@@ -154,5 +175,21 @@ class _ExamHistoryState extends State<ExamHistory> {
     return '${date.day}-${months[date.month - 1]}-${date.year}'
         '   '
         '${date.hour}:${date.minute.toString().padLeft(2, '0')}';
+  }
+
+  Future<void> getBannerAd() async {
+    bannerAd = BannerAd(
+      size: AdSize.banner,
+      adUnitId: AddHelper.bannerAdId,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            isAdLoaded = true;
+          });
+        },
+      ),
+      request: const AdRequest(),
+    );
+    bannerAd.load();
   }
 }

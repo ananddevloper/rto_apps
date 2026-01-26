@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:rto_apps/helper/add_helper.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 import 'package:rto_apps/helper/asset_helper.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -11,16 +13,21 @@ class ProcessDrivingLicence extends StatefulWidget {
 }
 
 class _ProcessDrivingLicenceState extends State<ProcessDrivingLicence> {
+ late BannerAd bannerAd;
+  bool isAdLoaded = false;  
   WebViewController? controller;
   String htmlData = '';
   bool _isLoading = true;
   @override
   void initState() {
     super.initState();
+    getBannerAd();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       loadHtmlData();
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +45,13 @@ class _ProcessDrivingLicenceState extends State<ProcessDrivingLicence> {
           ),
         ),
       ),
+      bottomNavigationBar: isAdLoaded
+          ? SizedBox(
+              height: bannerAd.size.height.toDouble(),
+              width: bannerAd.size.width.toDouble(),
+              child: AdWidget(ad: bannerAd),
+            )
+          : null,
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
           : WebViewWidget(controller: controller!),
@@ -56,4 +70,24 @@ class _ProcessDrivingLicenceState extends State<ProcessDrivingLicence> {
       _isLoading = false;
     });
   }
+
+
+ 
+Future<void> getBannerAd() async {
+    bannerAd = BannerAd(
+      size: AdSize.banner,
+      adUnitId: AddHelper.bannerAdId,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            isAdLoaded = true;
+          });
+        },
+      ),
+      request: const AdRequest(),
+    );
+    bannerAd.load();
+  }
+
+
 }

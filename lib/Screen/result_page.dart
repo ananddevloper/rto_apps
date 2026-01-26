@@ -6,6 +6,8 @@ import 'package:rto_apps/Screen/practice_questions.dart';
 import 'package:rto_apps/Rto_Modals/question_model.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 import 'package:rto_apps/helper/asset_helper.dart';
+import 'package:rto_apps/widget/large_banner_widget.dart';
+import 'package:rto_apps/widget/small_banner_widget.dart';
 
 class ResultPage extends StatefulWidget {
   const ResultPage({
@@ -34,6 +36,7 @@ class _ResultPageState extends State<ResultPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.welcomeBackgroundColor,
+      bottomNavigationBar: SmallBannerWidget(),
       body: SafeArea(
         child: widget.result == true ? getPassView() : getFaildView(),
       ),

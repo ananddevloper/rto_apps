@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:rto_apps/Settings/settin_page.dart';
 import 'package:rto_apps/Screen/exam_history.dart';
 import 'package:rto_apps/Screen/introduction_page.dart';
@@ -10,8 +12,12 @@ import 'package:rto_apps/Screen/practice_questions.dart';
 import 'package:rto_apps/Rto_Modals/question_model.dart';
 import 'package:rto_apps/Screen/question_bank.dart';
 import 'package:rto_apps/Screen/road_sign.dart';
+import 'package:rto_apps/helper/add_helper.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 import 'package:rto_apps/helper/asset_helper.dart';
+import 'package:rto_apps/widget/intersetital_ad_helper.dart';
+import 'package:rto_apps/widget/large_banner_widget.dart';
+import 'package:rto_apps/widget/small_banner_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,10 +27,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // Map<String, dynamic>? allStateRtoData;
+  //////////
+
   bool isLoading = true;
   String? selectedState;
-  List<QuestionModel> homeScreenLoadingList = []; /////////////////////
+  List<QuestionModel> homeScreenLoadingList = [];
+
   List<Map<String, dynamic>> get homeScreenList => [
     {
       'cardColor': AppColors.redColor,
@@ -33,15 +41,16 @@ class _HomeScreenState extends State<HomeScreen> {
       'titleColor': AppColors.redColor,
       'arrowIcon': SvgPicture.asset(AppIcon.arrow, color: AppColors.redColor),
       'onTap': () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => QuestionBank(
-              questionList: homeScreenLoadingList
-                  .where((q) => q.image == null || q.image!.isEmpty)
-                  .toList(),
-            ),
-          ),
+        InterstitialAdManager.showAd(
+          onAdClosed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    QuestionBank(questionList: homeScreenLoadingList),
+              ),
+            );
+          },
         );
       },
     },
@@ -55,20 +64,20 @@ class _HomeScreenState extends State<HomeScreen> {
         color: AppColors.greenColors,
       ),
       'onTap': () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => RoadSignScreen(
-              roadSign: homeScreenLoadingList
-                  .where(
-                    (q) => q.image != null || (q.image?.isNotEmpty ?? false),
-                  )
-                  .toList(),
-            ),
-          ),
+        InterstitialAdManager.showAd(
+          onAdClosed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    RoadSignScreen(roadSign: homeScreenLoadingList),
+              ),
+            );
+          },
         );
       },
     },
+
     {
       'cardColor': AppColors.appBarColors,
       'icon': SvgPicture.asset(AppIcon.practiceQuestion),
@@ -126,6 +135,15 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   @override
+  void initState() {
+    loadingHomeData();
+    checkForUpdate();
+    // loadInterstitialAd();
+    // loadingRtoOffices();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.homePageBackground,
@@ -156,6 +174,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+
+      bottomNavigationBar: SmallBannerWidget(),
+
       body: Padding(
         padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
         child: SingleChildScrollView(
@@ -188,6 +209,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     Divider(color: Colors.transparent),
                 itemCount: homeScreenList.length,
               ),
+              SizedBox(height: 10),
+              LargeBannerAdWidget(),
             ],
           ),
         ),
@@ -227,13 +250,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  @override
-  void initState() {
-    loadingHomeData();
-    // loadingRtoOffices();
-    super.initState();
-  }
-
   Future<void> loadingHomeData() async {
     final String response = await rootBundle.loadString(AppFile.dataJson);
     final List<dynamic> data = json.decode(response);
@@ -251,4 +267,17 @@ class _HomeScreenState extends State<HomeScreen> {
     selectedState = await getSavedState();
     setState(() {});
   }
+
+void checkForUpdate() async {
+  AppUpdateInfo updateInfo = await InAppUpdate.checkForUpdate();
+
+  if (updateInfo.updateAvailability ==
+          UpdateAvailability.updateAvailable &&
+      updateInfo.flexibleUpdateAllowed) {
+
+    await InAppUpdate.startFlexibleUpdate();
+    await InAppUpdate.completeFlexibleUpdate();
+  }
+}
+
 }

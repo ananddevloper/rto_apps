@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:rto_apps/Rto_Modals/question_model.dart';
+import 'package:rto_apps/Screen/question_bank.dart';
+import 'package:rto_apps/helper/add_helper.dart';
 import 'package:rto_apps/helper/app_colors.dart';
+import 'package:rto_apps/widget/large_banner_widget.dart';
+import 'package:rto_apps/widget/small_banner_widget.dart';
 
 class RoadSignScreen extends StatefulWidget {
   const RoadSignScreen({super.key, required this.roadSign});
@@ -27,6 +32,7 @@ class _RoadSignScreenState extends State<RoadSignScreen> {
           ),
         ),
       ),
+      bottomNavigationBar: SmallBannerWidget(),
       body: Padding(
         padding: const EdgeInsets.all(7.0),
         child: Scrollbar(
@@ -78,8 +84,15 @@ class _RoadSignScreenState extends State<RoadSignScreen> {
               );
             },
             separatorBuilder: (context, index) {
-              return SizedBox(height: 10);
+              return Column(
+                children: [
+                  ((index + 1) % 4 == 0)
+                      ? const LargeBannerAdWidget()
+                      : SizedBox(height: 5),
+                ],
+              );
             },
+
             itemCount: roadSignList.length,
           ),
         ),
@@ -90,6 +103,7 @@ class _RoadSignScreenState extends State<RoadSignScreen> {
   @override
   void initState() {
     // TODO: implement initState
+
     roadSignList = widget.roadSign;
     super.initState();
   }
