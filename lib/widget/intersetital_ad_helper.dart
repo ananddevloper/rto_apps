@@ -36,10 +36,10 @@ class InterstitialAdManager {
   }
 
   /// Show Ad
-  static void showAd({required Function() onAdClosed}) async {
+  static void showAd({required Function() onAdClosed, bool? showAd}) async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    int interstitialCounter = sp.getInt('interstitialCounter') ?? 0;
-    if (interstitialCounter % 3 != 0) {
+    int interstitialCounter = sp.getInt('interstitialCounter') ?? 1;
+    if (interstitialCounter % 3 != 0 && showAd == false) {
       interstitialCounter++;
       await sp.setInt('interstitialCounter', interstitialCounter);
       onAdClosed();

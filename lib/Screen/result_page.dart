@@ -131,7 +131,7 @@ class _ResultPageState extends State<ResultPage> {
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 0),
-          child: Lottie.asset(AppAnimation.championAnimation, height: 320),
+          child: Lottie.asset(AppAnimation.championAnimation, height: 300),
         ),
       ],
     );
@@ -140,97 +140,98 @@ class _ResultPageState extends State<ResultPage> {
   Column getFaildView() {
     return Column(
       children: [
-        Expanded(
-          child: Card(
-            color: AppColors.redColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadiusGeometry.circular(20),
-            ),
-            margin: EdgeInsets.all(20),
-            elevation: 10,
-            shadowColor: AppColors.redColor,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Failed!',
-                      style: TextStyle(
-                        color: AppColors.whiteColors,
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                      ),
+        Card(
+          color: AppColors.redColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadiusGeometry.circular(20),
+          ),
+          margin: EdgeInsets.all(20),
+          elevation: 10,
+          shadowColor: AppColors.redColor,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Failed!',
+                    style: TextStyle(
+                      color: AppColors.whiteColors,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
                     ),
-                    SizedBox(height: 20),
-                    Text(
-                      textAlign: TextAlign.center,
-                      'Sorry, you have failed the driving license test. We would suggest you refer to the question bank and try again.',
-                      style: TextStyle(
-                        color: AppColors.whiteColors,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    textAlign: TextAlign.center,
+                    'Sorry, you have failed the driving license test. We would suggest you refer to the question bank and try again.',
+                    style: TextStyle(
+                      color: AppColors.whiteColors,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
                     ),
-                    SizedBox(height: 20),
-                    getResultScore(title: 'Your Score is'),
-                    SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => HomeScreen(),
-                                ),
-                                (route) => false,
-                              );
-                            },
-                            child: getBasicDesign(
-                              icon: Icons.home,
-                              title: 'Home',
-                            ),
+                  ),
+                  SizedBox(height: 20),
+                  getResultScore(title: 'Your Score is'),
+                  SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomeScreen(),
+                              ),
+                              (route) => false,
+                            );
+                          },
+                          child: getBasicDesign(
+                            icon: Icons.home,
+                            title: 'Home',
                           ),
                         ),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              for (var q in widget.questions) {
-                                q.reset();
-                              }
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  // builder: (context) => PracticeQuestions(
-                                  //   title: widget.title,
-                                  //   examList: widget.questions,
-                                  //   showTimer: widget.showTimer,
-                                  // ),
-                                  builder: (context) => ExamHistory(),
-                                ),
-                              );
-                            },
-                            child: getBasicDesign(
-                              icon: Icons.refresh,
-                              title: 'Check History',
-                            ),
+                      ),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            for (var q in widget.questions) {
+                              q.reset();
+                            }
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                // builder: (context) => PracticeQuestions(
+                                //   title: widget.title,
+                                //   examList: widget.questions,
+                                //   showTimer: widget.showTimer,
+                                // ),
+                                builder: (context) => ExamHistory(),
+                              ),
+                            );
+                          },
+                          child: getBasicDesign(
+                            icon: Icons.refresh,
+                            title: 'Check History',
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
         ),
 
-        Padding(
-          padding: const EdgeInsets.only(bottom: 10),
-          child: Lottie.asset(AppAnimation.failAnimation, height: 320),
+        Flexible(
+          child: Padding(
+            
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Lottie.asset(AppAnimation.failAnimation, height: 320),
+          ),
         ),
       ],
     );

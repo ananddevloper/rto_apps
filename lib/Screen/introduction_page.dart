@@ -82,27 +82,31 @@ class _IntroductionPageState extends State<IntroductionPage> {
                       SizedBox(height: 20),
                       InkWell(
                         onTap: () {
-                          StartExamDialog.show(
-                            context: context,
-                            onStart: () {
-                              RewardAdHelper.showAd(
-                                onRewardEarned: (reward) {
-                                  List<QuestionModel> random20Questions =
-                                      getRandomQuestions(widget.examList, 15);
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => PracticeQuestions(
-                                        title: widget.title,
-                                        examList: random20Questions,
-                                        showTimer: true,
-                                      ),
-                                    ),
-                                  );
-                                },
+                          // StartExamDialog.show(
+                          //   context: context,
+                          //   onStart: () {
+                          //     RewardAdHelper.showAd(
+                          //       onRewardEarned: (reward) {
+                          //       },
+                          //     );
+                          //     return;
+                          //   },
+                          // );
+                          InterstitialAdManager.showAd(
+                            showAd: true,
+                            onAdClosed: () {
+                              List<QuestionModel> random20Questions =
+                                  getRandomQuestions(widget.examList, 15);
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PracticeQuestions(
+                                    title: widget.title,
+                                    examList: random20Questions,
+                                    showTimer: true,
+                                  ),
+                                ),
                               );
-                              return;
-                             
                             },
                           );
                         },

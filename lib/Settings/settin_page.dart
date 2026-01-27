@@ -11,6 +11,7 @@ import 'package:rto_apps/helper/add_helper.dart';
 import 'package:rto_apps/helper/app_colors.dart';
 import 'package:rto_apps/helper/asset_helper.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:store_redirect/store_redirect.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Settings extends StatefulWidget {
@@ -19,14 +20,12 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
- 
   late BannerAd bannerAd;
   bool isAdLoaded = false;
 
   String appVersion = '';
   TextEditingController searchController = TextEditingController();
   List<Map<String, dynamic>> get getSettingsList => [
-   
     {
       'title': 'Form',
       'icons': Icons.description,
@@ -45,6 +44,7 @@ class _SettingsState extends State<Settings> {
         );
       },
     },
+
     {
       'title': 'RTO Office',
       'icons': Icons.business,
@@ -55,6 +55,7 @@ class _SettingsState extends State<Settings> {
         );
       },
     },
+
     {
       'title': 'Contact Us',
       'icons': Icons.email,
@@ -81,7 +82,10 @@ class _SettingsState extends State<Settings> {
         );
       },
     },
-    {'title': 'Rate App', 'icons': Icons.star, 'onTap': () {}},
+    {'title': 'Rate App', 'icons': Icons.star, 'onTap': () {
+StoreRedirect.redirect();
+
+    }},
     {
       'title': 'Disclaimer',
       'icons': Icons.info,
@@ -305,6 +309,7 @@ class _SettingsState extends State<Settings> {
       throw 'Could not launch Google Maps';
     }
   }
+
   Future<void> getBannerAd() async {
     bannerAd = BannerAd(
       size: AdSize.banner,

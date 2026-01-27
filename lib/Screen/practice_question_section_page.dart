@@ -32,7 +32,6 @@ class _PracticeQuestionSectionPageState
   void initState() {
     // TODO: implement initState
     getBannerAd();
-
     allQuestions = widget.practiceQuestions;
     super.initState();
   }

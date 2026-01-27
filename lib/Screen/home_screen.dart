@@ -98,6 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
     },
+    
     {
       'cardColor': AppColors.orange,
       'icon': SvgPicture.asset(AppIcon.exam),
@@ -175,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
 
-      bottomNavigationBar: SmallBannerWidget(),
+     bottomNavigationBar: SmallBannerWidget(),
 
       body: Padding(
         padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
@@ -210,7 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemCount: homeScreenList.length,
               ),
               SizedBox(height: 10),
-              LargeBannerAdWidget(),
+             LargeBannerAdWidget(),
             ],
           ),
         ),

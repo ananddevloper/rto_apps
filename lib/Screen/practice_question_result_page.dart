@@ -141,7 +141,7 @@ class _PracticeQuestionResultPageState
                   );
                 },
               ),
-
+SizedBox(height: 30,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
